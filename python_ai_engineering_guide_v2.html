@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python for AI Engineering — Complete Guide (Java Engineer Edition)</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ─────────────────────────────────────────────────────────────────────
+   PRINT-FRIENDLY COLOR SYSTEM
+   All backgrounds are light (90–97% white). All borders are solid and
+   visible at 300 dpi. Code blocks use per-phase tinted light backgrounds
+   with dark ink — no dark-mode code blocks.
+   ───────────────────────────────────────────────────────────────────── */
+:root {
+  --bg:      #ffffff;
+  --surface: #f8f8f8;
+  --border:  #c8cad0;
+  --text:    #111318;
+  --muted:   #444860;
+  --subtle:  #7a8099;
+
+  /* Phase 1 — Teal/Green */
+  --p1:      #075f4a;
+  --p1-bg:   #dff4ee;
+  --p1-mid:  #8ecfbe;
+  --p1-lite: #edfaf6;
+  --p1-code: #e8f7f2;   /* code block bg for phase 1 */
+  --p1-cbdr: #8ecfbe;   /* code block border */
+
+  /* Phase 2 — Indigo/Purple */
+  --p2:      #3a28b0;
+  --p2-bg:   #e8e5fb;
+  --p2-mid:  #9b8fea;
+  --p2-lite: #f1effd;
+  --p2-code: #eeebfd;
+  --p2-cbdr: #9b8fea;
+
+  /* Phase 3 — Amber/Orange */
+  --p3:      #924d06;
+  --p3-bg:   #fdebd5;
+  --p3-mid:  #e8a660;
+  --p3-lite: #fef5ea;
+  --p3-code: #fef0dc;
+  --p3-cbdr: #e8a660;
+
+  /* Phase 4 — Rose/Pink */
+  --p4:      #881a56;
+  --p4-bg:   #fbe4ef;
+  --p4-mid:  #e082ae;
+  --p4-lite: #fdf0f7;
+  --p4-code: #fdeaf4;
+  --p4-cbdr: #e082ae;
+
+  /* Syntax token colors (dark ink on light code bg) */
+  --ck:  #0055a8;   /* keyword  → deep blue */
+  --cf:  #005f8a;   /* function → teal-blue */
+  --cs:  #2a7a00;   /* string   → green */
+  --cm:  #888090;   /* comment  → gray-purple italic */
+  --cj:  #7a4800;   /* java     → amber-brown */
+  --cn:  #b53a00;   /* number   → burnt orange */
+  --cp:  #6a007a;   /* special  → purple */
+  --ct:  #1a1d26;   /* text     → near-black */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-size: 8pt;
+  line-height: 1.55;
+  color: var(--text);
+  background: #8a8fa0;
+}
+
+/* ── Page shell ── */
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  background: var(--bg);
+  margin: 0 auto 6mm;
+  padding: 9mm 9mm 7mm;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border: 1px solid #999;
+}
+
+/* ── Page header ── */
+.ph {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 5px;
+  margin-bottom: 8px;
+  border-bottom: 2.5px solid var(--text);
+}
+.ph-title { font-size: 10.5pt; font-weight: 700; letter-spacing: -0.4px; }
+.ph-sub   { font-size: 7pt; color: var(--muted); font-weight: 500; }
+.badge {
+  font-size: 6.5pt; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.9px; padding: 3px 9px; border-radius: 3px;
+  color: #fff; border: 1px solid rgba(0,0,0,0.15);
+}
+
+/* ── 2-column grid ── */
+.cols  { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; flex: 1; }
+.span2 { grid-column: 1 / -1; }
+
+/* ── Section header ── */
+.sh {
+  font-size: 7pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.9px;
+  padding: 3px 8px; border-radius: 3px; margin-bottom: 4px;
+  display: flex; align-items: center; gap: 5px;
+  border: 1px solid;
+}
+.sh.t  { background: var(--p1-bg);  color: var(--p1);  border-color: var(--p1-mid); }
+.sh.pu { background: var(--p2-bg);  color: var(--p2);  border-color: var(--p2-mid); }
+.sh.a  { background: var(--p3-bg);  color: var(--p3);  border-color: var(--p3-mid); }
+.sh.pk { background: var(--p4-bg);  color: var(--p4);  border-color: var(--p4-mid); }
+
+/* ── Card ── */
+.card {
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 5px;
+  padding: 5px 7px;
+  margin-bottom: 5px;
+}
+/* Phase-colored left border accent + matching subtle card tint */
+.card.tl { border-left: 4px solid var(--p1); background: var(--p1-lite); }
+.card.pu { border-left: 4px solid var(--p2); background: var(--p2-lite); }
+.card.am { border-left: 4px solid var(--p3); background: var(--p3-lite); }
+.card.pk { border-left: 4px solid var(--p4); background: var(--p4-lite); }
+
+.cl  { font-size: 7.5pt; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.cd  { font-size: 7.5pt; color: var(--muted); margin-bottom: 3px; line-height: 1.5; }
+
+/* ── Mantra ── */
+.mantra {
+  font-size: 7pt; font-style: italic; font-weight: 600;
+  border-left: 3px solid; padding-left: 6px; margin: 3px 0;
+  line-height: 1.4;
+}
+.mantra.t  { color: var(--p1); border-color: var(--p1); }
+.mantra.pu { color: var(--p2); border-color: var(--p2); }
+.mantra.am { color: var(--p3); border-color: var(--p3); }
+.mantra.pk { color: var(--p4); border-color: var(--p4); }
+
+/* ── Code blocks — light bg, dark ink, phase-tinted ── */
+pre {
+  border-radius: 4px; padding: 5px 7px;
+  margin: 3px 0; overflow: hidden;
+  font-family: 'JetBrains Mono', monospace; font-size: 6.8pt; line-height: 1.65;
+  white-space: pre;
+  border: 1.5px solid;
+}
+/* Default code bg (used outside phase-specific cards) */
+pre { background: #f0f4ff; border-color: #b0bce0; }
+
+/* Phase-specific code backgrounds — set on card wrapper, inherited by pre */
+.card.tl pre { background: var(--p1-code); border-color: var(--p1-cbdr); }
+.card.pu pre { background: var(--p2-code); border-color: var(--p2-cbdr); }
+.card.am pre { background: var(--p3-code); border-color: var(--p3-cbdr); }
+.card.pk pre { background: var(--p4-code); border-color: var(--p4-cbdr); }
+
+/* Syntax tokens — dark ink on light bg */
+.kw  { color: var(--ck); font-weight: 600; }
+.fn  { color: var(--cf); }
+.st  { color: var(--cs); }
+.cm  { color: var(--cm); font-style: italic; }
+.jv  { color: var(--cj); font-weight: 600; }
+.nm  { color: var(--cn); }
+.tx  { color: var(--ct); }
+.pu2 { color: var(--cp); }
+
+/* ── Side-by-side compare ── */
+.cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin: 3px 0; }
+.cmp pre { margin: 0; }
+.ll {
+  font-size: 5.8pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px;
+  padding: 1px 5px; border-radius: 2px 2px 0 0; display: inline-block;
+  border: 1px solid; border-bottom: none;
+}
+.ll.jv { background: #fef5dc; color: var(--cj); border-color: #e8c870; }
+.ll.py { background: #e0ecff; color: var(--ck); border-color: #90b4e0; }
+
+/* Java compare pre uses amber tint */
+.cmp .ll.jv + pre { background: #fef8e8; border-color: #e8c870; }
+/* Python compare pre uses blue tint */
+.cmp .ll.py + pre { background: #e8f0fc; border-color: #90b4e0; }
+
+/* ── Table ── */
+table { width: 100%; border-collapse: collapse; font-size: 7pt; margin: 3px 0;
+        border: 1.5px solid var(--border); }
+th {
+  background: var(--text); color: #ffffff; font-weight: 700;
+  text-align: left; padding: 3px 6px; font-size: 6.5pt;
+}
+td { padding: 2.5px 6px; border-bottom: 1px solid var(--border); vertical-align: top; }
+tr:nth-child(even) td { background: var(--surface); }
+td:not(:last-child), th:not(:last-child) { border-right: 1px solid var(--border); }
+code {
+  font-family: 'JetBrains Mono', monospace; font-size: 6.5pt;
+  background: #e8eaf4; padding: 1px 3px; border-radius: 2px;
+  border: 1px solid #c0c4d8; color: #1a2060;
+}
+
+/* ── Tag / pill ── */
+.tag {
+  display: inline-block; font-size: 6pt; font-weight: 700;
+  padding: 1px 5px; border-radius: 10px; margin: 1px 1px;
+  border: 1px solid;
+}
+.tag.t  { background: var(--p1-bg); color: var(--p1); border-color: var(--p1-mid); }
+.tag.pu { background: var(--p2-bg); color: var(--p2); border-color: var(--p2-mid); }
+.tag.am { background: var(--p3-bg); color: var(--p3); border-color: var(--p3-mid); }
+.tag.pk { background: var(--p4-bg); color: var(--p4); border-color: var(--p4-mid); }
+
+/* ── Refs ── */
+.refs { margin-top: 3px; }
+.refs a {
+  font-size: 6.3pt; color: var(--p2); text-decoration: none;
+  margin-right: 6px; border-bottom: 1px solid var(--p2-mid);
+}
+
+/* ── Info box ── */
+.infobox {
+  border-radius: 4px; padding: 4px 7px; margin: 3px 0;
+  font-size: 7pt; line-height: 1.5;
+  border: 1.5px solid;
+}
+.infobox.t  { background: var(--p1-bg);  border-color: var(--p1-mid); color: var(--p1); }
+.infobox.pu { background: var(--p2-bg);  border-color: var(--p2-mid); color: var(--p2); }
+.infobox.am { background: var(--p3-bg);  border-color: var(--p3-mid); color: var(--p3); }
+.infobox.pk { background: var(--p4-bg);  border-color: var(--p4-mid); color: var(--p4); }
+
+/* ── Page footer ── */
+.pf {
+  margin-top: 6px; border-top: 1.5px solid var(--border); padding-top: 3px;
+  font-size: 6pt; color: var(--subtle);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.pf a { color: var(--p2); text-decoration: none; }
+
+hr.div { border: none; border-top: 1px dashed var(--border); margin: 4px 0; }
+.sec { margin-bottom: 6px; }
+
+/* ── Print media ── */
+@media print {
+  body { background: white; }
+  .page {
+    margin: 0; padding: 10mm 9mm 8mm;
+    page-break-after: always;
+    box-shadow: none; border: none;
+    min-height: 0;
+    height: 277mm;
+  }
+  .page:last-child { page-break-after: avoid; }
+  @page { size: A4; margin: 0; }
+  /* Force background colors to print */
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════ PAGE 1 · Phase 1a ═══════════════════════════ -->
+<div class="page">
+  <div class="ph">
+    <div><div class="ph-title">Python for AI Engineering — Java Engineer Edition</div>
+         <div class="ph-sub">Phase 1 · Syntax &amp; Type System · Page 1 of 6</div></div>
+    <span class="badge" style="background:var(--p1)">Phase 1 — Syntax &amp; Types</span>
+  </div>
+
+  <div class="cols">
+  <!-- ── LEFT ── -->
+  <div>
+
+    <div class="sec">
+      <div class="sh t">🧠 Dynamic Typing — No Declarations</div>
+      <div class="card tl">
+        <div class="cl">Variables are labels, not typed slots</div>
+        <div class="cd">Python infers types at runtime. There is no <code>int x = 5</code>. Variables are re-bindable to any type. This is NOT a weakness — Python 3.9+ has full type hint support for IDE checking and documentation without runtime cost.</div>
+        <div class="mantra t">"A variable is a sticky note, not a typed box. Stick it anywhere."</div>
+        <div class="cmp">
+          <div><span class="ll jv">Java</span>
+<pre><span class="jv">String</span> <span class="tx">name</span> = <span class="st">"Bhanu"</span>;
+<span class="jv">int</span> <span class="tx">age</span> = <span class="nm">35</span>;
+<span class="cm">// type is fixed forever</span>
+<span class="jv">List</span>&lt;<span class="jv">String</span>&gt; <span class="tx">items</span>;
+<span class="jv">Optional</span>&lt;<span class="jv">String</span>&gt; <span class="tx">val</span>;</pre>
+          </div>
+          <div><span class="ll py">Python</span>
+<pre><span class="tx">name</span> = <span class="st">"Bhanu"</span>   <span class="cm"># str</span>
+<span class="tx">age</span>  = <span class="nm">35</span>       <span class="cm"># int</span>
+<span class="cm"># re-bind anytime:</span>
+<span class="tx">items</span>: <span class="fn">list</span>[<span class="fn">str</span>] = []
+<span class="tx">val</span>: <span class="fn">str</span> | <span class="fn">None</span> = <span class="kw">None</span></pre>
+          </div>
+        </div>
+        <div class="cd">Use <strong>type hints</strong> + <code>mypy</code> for static analysis. The runtime ignores them, but your IDE and team won't.</div>
+        <pre><span class="kw">def</span> <span class="fn">greet</span>(<span class="tx">name</span>: <span class="fn">str</span>, <span class="tx">times</span>: <span class="fn">int</span> = <span class="nm">1</span>) -> <span class="fn">str</span>:
+    <span class="kw">return</span> <span class="st">f"Hello </span><span class="kw">{name}</span><span class="st">!"</span> * <span class="tx">times</span>  <span class="cm"># f-string = Java's formatted()</span>
+
+<span class="cm"># Multi-line f-string:</span>
+<span class="tx">msg</span> = <span class="st">f"""</span>
+<span class="st">  User: </span><span class="kw">{name}</span><span class="st">, Score: </span><span class="kw">{score:.2f}</span><span class="st">  </span><span class="cm"># :.2f = format spec</span>
+<span class="st">"""</span></pre>
+        <div class="refs">
+          <a href="https://docs.python.org/3/library/typing.html">typing module</a>
+          <a href="https://mypy.readthedocs.io/en/stable/">mypy checker</a>
+          <a href="https://peps.python.org/pep-0604/">PEP 604 — X | Y union syntax</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sh t">🦆 Duck Typing &amp; Protocols — No Interfaces</div>
+      <div class="card tl">
+        <div class="cl">Structural typing: if it has the method, it works</div>
+        <div class="cd">Python has no <code>implements</code> keyword. Objects are compatible if they have the right methods. Use <code>Protocol</code> (PEP 544) as a structural interface — the class never mentions the Protocol, yet type checkers validate it. Use <code>ABC</code> for enforced abstract base classes.</div>
+        <div class="mantra t">"Don't check the type. Check the behaviour. If it quacks, it's a duck."</div>
+        <pre><span class="kw">from</span> <span class="fn">typing</span> <span class="kw">import</span> <span class="pu2">Protocol</span>
+
+<span class="kw">class</span> <span class="fn">LLMBackend</span>(<span class="pu2">Protocol</span>):          <span class="cm"># ≈ Java interface</span>
+    <span class="kw">def</span> <span class="fn">complete</span>(<span class="tx">self</span>, <span class="tx">prompt</span>: <span class="fn">str</span>) -> <span class="fn">str</span>: ...
+    <span class="kw">def</span> <span class="fn">embed</span>(<span class="tx">self</span>, <span class="tx">text</span>: <span class="fn">str</span>) -> <span class="fn">list</span>[<span class="fn">float</span>]: ...
+
+<span class="kw">class</span> <span class="fn">OpenAIBackend</span>:            <span class="cm"># no "implements"!</span>
+    <span class="kw">def</span> <span class="fn">complete</span>(<span class="tx">self</span>, <span class="tx">prompt</span>: <span class="fn">str</span>) -> <span class="fn">str</span>:
+        <span class="kw">return</span> <span class="fn">openai</span>.<span class="fn">chat</span>(<span class="tx">prompt</span>)
+    <span class="kw">def</span> <span class="fn">embed</span>(<span class="tx">self</span>, <span class="tx">text</span>: <span class="fn">str</span>) -> <span class="fn">list</span>[<span class="fn">float</span>]:
+        <span class="kw">return</span> <span class="fn">openai</span>.<span class="fn">embed</span>(<span class="tx">text</span>)
+
+<span class="kw">def</span> <span class="fn">run_agent</span>(<span class="tx">backend</span>: <span class="fn">LLMBackend</span>):   <span class="cm"># accepts any conforming class</span>
+    <span class="kw">return</span> <span class="tx">backend</span>.<span class="fn">complete</span>(<span class="st">"Hello"</span>)</pre>
+        <div class="refs">
+          <a href="https://peps.python.org/pep-0544/">PEP 544 — Protocols</a>
+          <a href="https://docs.python.org/3/library/abc.html">Abstract Base Classes</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sh t">📦 Data Structures — Built-in Power</div>
+      <div class="card tl">
+        <div class="cl">list · dict · set · tuple — all first-class citizens</div>
+        <div class="cd">Python's built-in collections are richer than Java's arrays. No need for <code>ArrayList</code>, <code>HashMap</code>, <code>HashSet</code> imports — they're literals.</div>
+        <pre><span class="cm"># list = ArrayList — ordered, mutable</span>
+<span class="tx">items</span> = [<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>]
+<span class="tx">items</span>.<span class="fn">append</span>(<span class="st">"d"</span>)
+<span class="tx">last</span> = <span class="tx">items</span>[<span class="nm">-1</span>]         <span class="cm"># negative indexing!</span>
+<span class="tx">sub</span>  = <span class="tx">items</span>[<span class="nm">1</span>:<span class="nm">3</span>]         <span class="cm"># slicing = subList(1,3)</span>
+
+<span class="cm"># dict = HashMap — insertion-ordered (3.7+)</span>
+<span class="tx">cfg</span> = {<span class="st">"model"</span>: <span class="st">"gpt-4"</span>, <span class="st">"temp"</span>: <span class="nm">0.7</span>}
+<span class="tx">cfg</span>[<span class="st">"max_tokens"</span>] = <span class="nm">1024</span>
+<span class="tx">model</span> = <span class="tx">cfg</span>.<span class="fn">get</span>(<span class="st">"model"</span>, <span class="st">"default"</span>)  <span class="cm"># safe get</span>
+
+<span class="cm"># tuple = immutable list (use for fixed structs)</span>
+<span class="tx">point</span> = (<span class="nm">3.14</span>, <span class="nm">2.72</span>)
+<span class="tx">x</span>, <span class="tx">y</span> = <span class="tx">point</span>              <span class="cm"># tuple unpacking!</span>
+
+<span class="cm"># set = HashSet</span>
+<span class="tx">seen</span> = {<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"a"</span>}    <span class="cm"># → {'a', 'b'}</span></pre>
+      </div>
+    </div>
+
+  </div><!-- end left -->
+
+  <!-- ── RIGHT ── -->
+  <div>
+
+    <div class="sec">
+      <div class="sh t">⚡ Comprehensions — Streams in One Line</div>
+      <div class="card tl">
+        <div class="cl">Replace Java stream chains with readable expressions</div>
+        <div class="cd">Comprehensions are not just syntactic sugar — they're how Pythonistas think. The pattern is always: <strong>[expression for item in iterable if condition]</strong>. Mastering these is essential; you'll see them in every AI codebase.</div>
+        <div class="mantra t">"[what | from where | filter] — three slots, read left to right."</div>
+        <pre><span class="tx">nums</span> = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>]
+
+<span class="cm"># List: Java → list.stream().filter().map().collect()</span>
+<span class="tx">evens_sq</span> = [<span class="tx">x</span>**<span class="nm">2</span> <span class="kw">for</span> <span class="tx">x</span> <span class="kw">in</span> <span class="tx">nums</span> <span class="kw">if</span> <span class="tx">x</span> % <span class="nm">2</span> == <span class="nm">0</span>]
+<span class="cm"># → [4, 16, 36]</span>
+
+<span class="cm"># Dict: build key→value maps</span>
+<span class="tx">word_len</span> = {<span class="tx">w</span>: <span class="fn">len</span>(<span class="tx">w</span>) <span class="kw">for</span> <span class="tx">w</span> <span class="kw">in</span> [<span class="st">"ai"</span>, <span class="st">"agent"</span>, <span class="st">"tool"</span>]}
+<span class="cm"># → {'ai': 2, 'agent': 5, 'tool': 4}</span>
+
+<span class="cm"># Set: unique values only</span>
+<span class="tx">unique_lens</span> = {<span class="fn">len</span>(<span class="tx">w</span>) <span class="kw">for</span> <span class="tx">w</span> <span class="kw">in</span> [<span class="st">"ai"</span>, <span class="st">"go"</span>, <span class="st">"java"</span>]}
+
+<span class="cm"># Generator (lazy — doesn't build list in memory)</span>
+<span class="tx">tokens</span> = (<span class="tx">t</span>.<span class="fn">strip</span>() <span class="kw">for</span> <span class="tx">t</span> <span class="kw">in</span> <span class="fn">open</span>(<span class="st">"data.txt"</span>))
+
+<span class="cm"># Nested: flatten 2D list (like flatMap)</span>
+<span class="tx">flat</span> = [<span class="tx">x</span> <span class="kw">for</span> <span class="tx">row</span> <span class="kw">in</span> [[<span class="nm">1</span>,<span class="nm">2</span>],[<span class="nm">3</span>,<span class="nm">4</span>]] <span class="kw">for</span> <span class="tx">x</span> <span class="kw">in</span> <span class="tx">row</span>]</pre>
+        <div class="infobox t">⚡ <strong>AI use:</strong> comprehensions are everywhere in prompt building, token processing, tool result parsing, and batch LLM calls.</div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sh t">🎀 Decorators — AOP Without a Framework</div>
+      <div class="card tl">
+        <div class="cl">Wrap functions transparently — think @Cacheable, @Retry, @Logged</div>
+        <div class="cd">A decorator is a function that takes a function and returns a new function. Python applies it at import time. This is how LangChain's <code>@tool</code>, FastAPI's <code>@app.route</code>, and retry libraries all work.</div>
+        <div class="mantra t">"@decorator = AOP around-advice without XML or proxies."</div>
+        <pre><span class="kw">import</span> <span class="fn">functools</span>, <span class="fn">time</span>, <span class="fn">logging</span>
+
+<span class="kw">def</span> <span class="fn">retry</span>(<span class="tx">max_attempts</span>=<span class="nm">3</span>):           <span class="cm"># parameterised decorator</span>
+    <span class="kw">def</span> <span class="fn">decorator</span>(<span class="tx">func</span>):
+        <span class="kw">@functools</span>.<span class="fn">wraps</span>(<span class="tx">func</span>)         <span class="cm"># preserves __name__ etc.</span>
+        <span class="kw">def</span> <span class="fn">wrapper</span>(*<span class="tx">args</span>, **<span class="tx">kwargs</span>):
+            <span class="kw">for</span> <span class="tx">attempt</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="tx">max_attempts</span>):
+                <span class="kw">try</span>: <span class="kw">return</span> <span class="fn">func</span>(*<span class="tx">args</span>, **<span class="tx">kwargs</span>)
+                <span class="kw">except</span> <span class="fn">Exception</span> <span class="kw">as</span> <span class="tx">e</span>:
+                    <span class="kw">if</span> <span class="tx">attempt</span> == <span class="tx">max_attempts</span>-<span class="nm">1</span>: <span class="kw">raise</span>
+                    <span class="fn">time</span>.<span class="fn">sleep</span>(<span class="nm">2</span>**<span class="tx">attempt</span>)  <span class="cm"># exponential backoff</span>
+        <span class="kw">return</span> <span class="tx">wrapper</span>
+    <span class="kw">return</span> <span class="tx">decorator</span>
+
+<span class="kw">@retry</span>(<span class="tx">max_attempts</span>=<span class="nm">3</span>)               <span class="cm"># ≈ @Retry(maxAttempts=3)</span>
+<span class="kw">def</span> <span class="fn">call_llm</span>(<span class="tx">prompt</span>: <span class="fn">str</span>) -> <span class="fn">str</span>:
+    <span class="kw">return</span> <span class="fn">openai_client</span>.<span class="fn">complete</span>(<span class="tx">prompt</span>)</pre>
+        <div class="refs">
+          <a href="https://docs.python.org/3/glossary.html#term-decorator">Decorator glossary</a>
+          <a href="https://realpython.com/primer-on-python-decorators/">Real Python guide</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sh t">🔄 Generators &amp; yield — Lazy Iterators</div>
+      <div class="card tl">
+        <div class="cl">yield pauses a function and remembers state — critical for LLM streaming</div>
+        <div class="cd">Java's <code>Iterator</code> requires a full class with <code>hasNext()</code> and <code>next()</code>. Python's <code>yield</code> turns any function into a lazy iterator. When an LLM streams tokens, Python generators are the natural fit.</div>
+        <div class="mantra t">"yield = pause here, hand back a value, resume when asked."</div>
+        <pre><span class="kw">def</span> <span class="fn">fibonacci</span>():                <span class="cm"># infinite generator!</span>
+    <span class="tx">a</span>, <span class="tx">b</span> = <span class="nm">0</span>, <span class="nm">1</span>
+    <span class="kw">while True</span>:
+        <span class="kw">yield</span> <span class="tx">a</span>                   <span class="cm"># pauses, returns a</span>
+        <span class="tx">a</span>, <span class="tx">b</span> = <span class="tx">b</span>, <span class="tx">a</span> + <span class="tx">b</span>
+
+<span class="tx">fib</span> = <span class="fn">fibonacci</span>()
+<span class="fn">print</span>([<span class="fn">next</span>(<span class="tx">fib</span>) <span class="kw">for</span> _ <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">6</span>)])  <span class="cm"># [0,1,1,2,3,5]</span>
+
+<span class="cm"># LLM streaming — this is exactly how Anthropic SDK works:</span>
+<span class="kw">def</span> <span class="fn">stream_llm</span>(<span class="tx">prompt</span>: <span class="fn">str</span>):
+    <span class="kw">with</span> <span class="tx">client</span>.<span class="fn">messages</span>.<span class="fn">stream</span>(<span class="tx">prompt</span>=<span class="tx">prompt</span>) <span class="kw">as</span> <span class="tx">stream</span>:
+        <span class="kw">for</span> <span class="tx">text</span> <span class="kw">in</span> <span class="tx">stream</span>.<span class="fn">text_stream</span>:
+            <span class="kw">yield</span> <span class="tx">text</span>            <span class="cm"># caller gets tokens one by one</span></pre>
+      </div>
+    </div>
+
+  </div><!-- end right -->
+  </div><!-- end cols -->
+
+  <div class="pf">
+    <span>Python for AI Engineering · Phase 1 · Page 1/6</span>
+    <span>Refs: <a href="https://docs.python.org/3/">docs.python.org</a> · <a href="https://realpython.com/">realpython.com</a> · <a href="https://mypy.readthedocs.io/">mypy</a></span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ PAGE 2 · Phase 1b ═══════════════════════════ -->
+<div class="page">
+  <div class="ph">
+    <div><div class="ph-title">Python for AI Engineering — Java Engineer Edition</div>
+         <div class="ph-sub">Phase 1 · Context Managers · Classes · Error Handling · GIL · Page 2 of 6</div></div>
+    <span class="badge" style="background:var(--p1)">Phase 1 — Syntax &amp; Types</span>
+  </div>
+
+  <div class="cols">
+  <!-- ── LEFT ── -->
+  <div>
+
+    <div class="sec">
+      <div class="sh t">🔒 Context Managers — try-with-resources, Evolved</div>
+      <div class="card tl">
+        <div class="cl">with = borrow, use, auto-return — even on exceptions</div>
+        <div class="cd">Python's <code>with</code> statement is Java's try-with-resources but more general. Any object implementing <code>__enter__</code> and <code>__exit__</code> works. In AI systems, use this for DB connections, file handles, API session clients, and tracing spans.</div>
+        <div class="mantra t">"with = borrow it, use it, auto-return it. No finally needed."</div>
+        <div class="cmp">
+          <div><span class="ll jv">Java</span>
+<pre><span class="kw">try</span>(<span class="jv">var</span> <span class="tx">r</span> = <span class="fn">getResource</span>()) {
+  <span class="tx">r</span>.<span class="fn">doWork</span>();
+} <span class="cm">// auto-closed</span></pre>
+          </div>
+          <div><span class="ll py">Python</span>
+<pre><span class="kw">with</span> <span class="fn">get_resource</span>() <span class="kw">as</span> <span class="tx">r</span>:
+    <span class="tx">r</span>.<span class="fn">do_work</span>()
+<span class="cm"># auto-closed</span></pre>
+          </div>
+        </div>
+        <pre><span class="kw">from</span> <span class="fn">contextlib</span> <span class="kw">import</span> <span class="fn">contextmanager</span>
+
+<span class="kw">@contextmanager</span>
+<span class="kw">def</span> <span class="fn">llm_trace</span>(<span class="tx">name</span>: <span class="fn">str</span>):
+    <span class="tx">span</span> = <span class="fn">tracer</span>.<span class="fn">start</span>(<span class="tx">name</span>)       <span class="cm"># __enter__: setup</span>
+    <span class="kw">try</span>:
+        <span class="kw">yield</span> <span class="tx">span</span>                  <span class="cm"># caller's body runs here</span>
+    <span class="kw">except</span> <span class="fn">Exception</span> <span class="kw">as</span> <span class="tx">e</span>:
+        <span class="tx">span</span>.<span class="fn">record_error</span>(<span class="tx">e</span>)
+        <span class="kw">raise</span>
+    <span class="kw">finally</span>:
+        <span class="tx">span</span>.<span class="fn">finish</span>()               <span class="cm"># __exit__: always runs</span>
+
+<span class="cm"># Multiple contexts in one line:</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="st">"in.txt"</span>) <span class="kw">as</span> <span class="tx">src</span>, <span class="fn">open</span>(<span class="st">"out.txt"</span>, <span class="st">"w"</span>) <span class="kw">as</span> <span class="tx">dst</span>:
+    <span class="tx">dst</span>.<span class="fn">write</span>(<span class="tx">src</span>.<span class="fn">read</span>())</pre>
+        <div class="refs">
+          <a href="https://docs.python.org/3/library/contextlib.html">contextlib docs</a>
+          <a href="https://peps.python.org/pep-0343/">PEP 343 — with statement</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sh t">🏗 Classes &amp; Dataclasses — Java Records, Evolved</div>
+      <div class="card tl">
+        <div class="cl">Python classes are simpler; @dataclass removes all boilerplate</div>
+        <div class="cd">Python classes don't need getters/setters, explicit constructors for simple cases, or <code>equals()</code> boilerplate. <code>@dataclass</code> auto-generates <code>__init__</code>, <code>__repr__</code>, <code>__eq__</code>. <code>Pydantic</code> (Phase 2) adds validation on top.</div>
+        <pre><span class="kw">from</span> <span class="fn">dataclasses</span> <span class="kw">import</span> <span class="fn">dataclass</span>, <span class="fn">field</span>
+
+<span class="kw">@dataclass</span>
+<span class="kw">class</span> <span class="fn">ChatMessage</span>:
+    <span class="tx">role</span>:    <span class="fn">str</span>                      <span class="cm"># required arg</span>
+    <span class="tx">content</span>: <span class="fn">str</span>                      <span class="cm"># required arg</span>
+    <span class="tx">tokens</span>:  <span class="fn">int</span>  = <span class="nm">0</span>                <span class="cm"># optional, default 0</span>
+    <span class="tx">meta</span>:    <span class="fn">dict</span> = <span class="fn">field</span>(           <span class="cm"># mutable default needs field()</span>
+        <span class="tx">default_factory</span>=<span class="fn">dict</span>)        <span class="cm"># ← never use default={}</span>
+
+<span class="tx">m</span> = <span class="fn">ChatMessage</span>(<span class="st">"user"</span>, <span class="st">"Hello AI"</span>)
+<span class="fn">print</span>(<span class="tx">m</span>)  <span class="cm"># ChatMessage(role='user', content='Hello AI', ...)</span>
+<span class="fn">print</span>(<span class="tx">m</span> == <span class="fn">ChatMessage</span>(<span class="st">"user"</span>, <span class="st">"Hello AI"</span>))  <span class="cm"># True (auto __eq__)</span>
+
+<span class="cm"># Full class with property (≈ Java getter/setter)</span>
+<span class="kw">class</span> <span class="fn">Agent</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="tx">self</span>, <span class="tx">name</span>: <span class="fn">str</span>):
+        <span class="tx">self</span>.<span class="tx">_name</span> = <span class="tx">name</span>           <span class="cm"># _ = private by convention</span>
+
+    <span class="kw">@property</span>
+    <span class="kw">def</span> <span class="fn">name</span>(<span class="tx">self</span>) -> <span class="fn">str</span>:
+        <span class="kw">return</span> <span class="tx">self</span>.<span class="tx">_name</span>.<span class="fn">upper</span>()  <span class="cm"># ≈ getName() but as attribute</span></pre>
+        <div class="infobox t">💡 <strong>Rule:</strong> Use <code>@dataclass</code> for plain data holders. Use <code>Pydantic BaseModel</code> when you need validation or JSON serialisation (LLM output parsing).</div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sh t">🛡 Exception Handling — Resilient Agent Calls</div>
+      <div class="card tl">
+        <div class="cl">No checked exceptions — but structured handling is still critical</div>
+        <div class="cd">Python has no checked exceptions (no <code>throws</code> clause). All exceptions are unchecked. For AI agents, you need structured retry / fallback logic around LLM API calls that can fail with rate limits, timeouts, or malformed outputs.</div>
+        <div class="mantra t">"Catch what you can fix. Let unexpected errors crash loudly and log."</div>
+        <pre><span class="kw">import</span> <span class="fn">anthropic</span>
+
+<span class="kw">try</span>:
+    <span class="tx">response</span> = <span class="fn">client</span>.<span class="fn">messages</span>.<span class="fn">create</span>(...)
+<span class="kw">except</span> <span class="fn">anthropic</span>.<span class="fn">RateLimitError</span>:
+    <span class="fn">time</span>.<span class="fn">sleep</span>(<span class="nm">60</span>); <span class="fn">retry</span>()       <span class="cm"># 429 — back off</span>
+<span class="kw">except</span> <span class="fn">anthropic</span>.<span class="fn">APITimeoutError</span>:
+    <span class="fn">use_fallback_model</span>()           <span class="cm"># timeout — switch</span>
+<span class="kw">except</span> (<span class="fn">ValueError</span>, <span class="fn">KeyError</span>) <span class="kw">as</span> <span class="tx">e</span>:
+    <span class="fn">log</span>.<span class="fn">error</span>(<span class="st">f"Parse error: </span><span class="kw">{e}</span><span class="st">"</span>)  <span class="cm"># bad LLM output</span>
+<span class="kw">else</span>:
+    <span class="fn">process</span>(<span class="tx">response</span>)             <span class="cm"># runs ONLY if no exception</span>
+<span class="kw">finally</span>:
+    <span class="fn">metrics</span>.<span class="fn">record</span>()              <span class="cm"># always runs (like finally)</span>
+
+<span class="cm"># Custom exception hierarchy:</span>
+<span class="kw">class</span> <span class="fn">AgentError</span>(<span class="fn">Exception</span>): ...
+<span class="kw">class</span> <span class="fn">ToolCallError</span>(<span class="fn">AgentError</span>): ...  <span class="cm"># inherits AgentError</span></pre>
+      </div>
+    </div>
+
+  </div><!-- end left -->
+
+  <!-- ── RIGHT ── -->
+  <div>
+
+    <div class="sec">
+      <div class="sh t">⚠️ The GIL — Python's Most Misunderstood Rule</div>
+      <div class="card tl">
+        <div class="cl">Global Interpreter Lock: one thread runs Python bytecode at a time</div>
+        <div class="cd">The GIL means Python threads can't run Python code in parallel on multiple CPU cores. But for AI engineering, <strong>almost all work is I/O-bound</strong> (network calls to LLM APIs), so the GIL rarely matters. NumPy and PyTorch release the GIL during C-level computation, so they're fine too.</div>
+        <div class="mantra t">"GIL kills CPU parallelism. asyncio and NumPy sidestep it entirely."</div>
+        <table>
+          <tr><th>Scenario</th><th>Java approach</th><th>Python approach</th><th>Why</th></tr>
+          <tr><td>LLM API calls (I/O)</td><td>Thread pool</td><td><code>asyncio</code> ✅</td><td>GIL releases on I/O</td></tr>
+          <tr><td>10 parallel API calls</td><td>CompletableFuture</td><td><code>asyncio.gather()</code></td><td>Coroutines, not threads</td></tr>
+          <tr><td>Matrix math (ML)</td><td>Threads</td><td>NumPy / PyTorch ✅</td><td>C extensions release GIL</td></tr>
+          <tr><td>CPU-heavy Python</td><td>Threads</td><td><code>multiprocessing</code></td><td>Separate processes, no GIL</td></tr>
+          <tr><td>Background tasks</td><td>Thread pool</td><td><code>concurrent.futures</code></td><td>Thread pool wrapper</td></tr>
+        </table>
+        <div class="refs">
+          <a href="https://docs.python.org/3/glossary.html#term-global-interpreter-lock">GIL docs</a>
+          <a href="https://docs.python.org/3/library/asyncio.html">asyncio docs</a>
+          <a href="https://docs.python.org/3/library/concurrent.futures.html">concurrent.futures</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sh t">🔧 Functions — First-Class Citizens</div>
+      <div class="card tl">
+        <div class="cl">Functions are objects — pass them, store them, return them</div>
+        <div class="cd">In Python, functions are values. You can pass them as arguments, store in dicts, and return from other functions. This enables powerful patterns used in LangChain, FastAPI, and agent frameworks.</div>
+        <pre><span class="cm"># Default args and keyword args</span>
+<span class="kw">def</span> <span class="fn">chat</span>(<span class="tx">prompt</span>: <span class="fn">str</span>, *, <span class="tx">model</span>=<span class="st">"gpt-4"</span>, <span class="tx">temp</span>=<span class="nm">0.7</span>):
+    ...                             <span class="cm"># * forces keyword-only</span>
+
+<span class="fn">chat</span>(<span class="st">"Hello"</span>, <span class="tx">temp</span>=<span class="nm">0.0</span>)          <span class="cm"># clear call site</span>
+
+<span class="cm"># *args, **kwargs — variable arguments</span>
+<span class="kw">def</span> <span class="fn">log</span>(*<span class="tx">msgs</span>, **<span class="tx">context</span>):         <span class="cm"># *args = varargs, **kwargs = Map</span>
+    <span class="kw">for</span> <span class="tx">m</span> <span class="kw">in</span> <span class="tx">msgs</span>: <span class="fn">print</span>(<span class="tx">m</span>, <span class="tx">context</span>)
+
+<span class="cm"># Lambda (single expression only)</span>
+<span class="tx">sort_by_len</span> = <span class="kw">lambda</span> <span class="tx">s</span>: <span class="fn">len</span>(<span class="tx">s</span>)    <span class="cm"># ≈ Comparator.comparing(String::length)</span>
+<span class="fn">sorted</span>([<span class="st">"agent"</span>, <span class="st">"ai"</span>, <span class="st">"tool"</span>], <span class="tx">key</span>=<span class="tx">sort_by_len</span>)
+
+<span class="cm"># Functions as values (used in tool registries)</span>
+<span class="tx">tools</span> = {
+    <span class="st">"search"</span>: <span class="fn">web_search</span>,           <span class="cm"># function as dict value</span>
+    <span class="st">"calc"</span>:   <span class="fn">calculator</span>,
+}
+<span class="tx">result</span> = <span class="tx">tools</span>[<span class="st">"search"</span>](<span class="st">"Python"</span>) <span class="cm"># call by name — agent dispatch!</span></pre>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sh t">📋 Phase 1 Java → Python Quick-Reference</div>
+      <table>
+        <tr><th>Java</th><th>Python</th><th>Note</th></tr>
+        <tr><td><code>System.out.println(x)</code></td><td><code>print(x)</code></td><td>also <code>f"{x}"</code></td></tr>
+        <tr><td><code>x instanceof String</code></td><td><code>isinstance(x, str)</code></td><td>or <code>type(x) is str</code></td></tr>
+        <tr><td><code>null</code></td><td><code>None</code></td><td>singleton</td></tr>
+        <tr><td><code>true / false</code></td><td><code>True / False</code></td><td>capital!</td></tr>
+        <tr><td><code>HashMap&lt;K,V&gt;</code></td><td><code>dict</code></td><td>ordered since 3.7</td></tr>
+        <tr><td><code>ArrayList&lt;T&gt;</code></td><td><code>list</code></td><td>literal <code>[1,2,3]</code></td></tr>
+        <tr><td><code>Optional&lt;T&gt;</code></td><td><code>T | None</code></td><td>PEP 604, Python 3.10+</td></tr>
+        <tr><td><code>final int X = 5</code></td><td><code>X = 5</code> (UPPER_CASE)</td><td>convention only</td></tr>
+        <tr><td><code>this.field</code></td><td><code>self.field</code></td><td>explicit in every method</td></tr>
+        <tr><td><code>interface Runnable</code></td><td><code>Protocol / ABC</code></td><td>structural typing</td></tr>
+        <tr><td><code>try-with-resources</code></td><td><code>with ... as x:</code></td><td>context manager</td></tr>
+        <tr><td><code>for (T x : list)</code></td><td><code>for x in list:</code></td><td>simpler</td></tr>
+        <tr><td><code>list.size()</code></td><td><code>len(list)</code></td><td>built-in function</td></tr>
+        <tr><td><code>Math.max(a, b)</code></td><td><code>max(a, b)</code></td><td>built-in</td></tr>
+        <tr><td><code>str.format()</code></td><td><code>f"text {var}"</code></td><td>f-string</td></tr>
+      </table>
+    </div>
+
+  </div><!-- end right -->
+  </div><!-- end cols -->
+
+  <div class="pf">
+    <span>Python for AI Engineering · Phase 1 · Page 2/6</span>
+    <span>Refs: <a href="https://docs.python.org/3/library/dataclasses.html">dataclasses</a> · <a href="https://docs.python.org/3/library/functions.html">built-in functions</a> · <a href="https://realpython.com/python-exceptions/">exceptions guide</a></span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ PAGE 3 · Phase 2 ═══════════════════════════ -->
+<div class="page">
+  <div class="ph">
+    <div><div class="ph-title">Python for AI Engineering — Java Engineer Edition</div>
+         <div class="ph-sub">Phase 2 · Data Stack · NumPy · Pandas · Pydantic · asyncio · Page 3 of 6</div></div>
+    <span class="badge" style="background:var(--p2)">Phase 2 — Data Stack &amp; Async</span>
+  </div>
+
+  <div class="cols">
+  <!-- ── LEFT ── -->
+  <div>
+
+    <div class="sec">
+      <div class="sh pu">🔢 NumPy — Stop Looping, Start Broadcasting</div>
+      <div class="card pu">
+        <div class="cl">Vectorised C-speed math on typed arrays — the engine of all ML</div>
+        <div class="cd">NumPy's <code>ndarray</code> is a typed, fixed-shape array backed by contiguous memory — like a Java <code>int[]</code> but N-dimensional. <strong>Broadcasting</strong> means operations apply across entire arrays without Python loops. This is why ML code is fast despite Python being slow — the loops run in C.</div>
+        <div class="mantra pu">"Stop writing Python loops over numbers. Let NumPy loop in C at 100× speed."</div>
+        <pre><span class="kw">import</span> <span class="fn">numpy</span> <span class="kw">as</span> <span class="tx">np</span>
+
+<span class="cm"># 1D array — like a typed int[] or double[]</span>
+<span class="tx">a</span> = <span class="fn">np</span>.<span class="fn">array</span>([<span class="nm">1.0</span>, <span class="nm">2.0</span>, <span class="nm">3.0</span>, <span class="nm">4.0</span>], <span class="tx">dtype</span>=<span class="fn">np</span>.<span class="tx">float32</span>)
+<span class="fn">print</span>(<span class="tx">a</span> * <span class="nm">2</span>)           <span class="cm"># [2. 4. 6. 8.] — no loop!</span>
+<span class="fn">print</span>(<span class="tx">a</span>.<span class="fn">mean</span>(), <span class="tx">a</span>.<span class="fn">std</span>()) <span class="cm"># 2.5, 1.118</span>
+<span class="fn">print</span>(<span class="tx">a</span>[<span class="tx">a</span> > <span class="nm">2</span>])          <span class="cm"># [3. 4.] — boolean mask (fancy indexing)</span>
+
+<span class="cm"># 2D: think ML feature matrix (rows=samples, cols=features)</span>
+<span class="tx">m</span> = <span class="fn">np</span>.<span class="fn">array</span>([[<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>],
+              [<span class="nm">4</span>,<span class="nm">5</span>,<span class="nm">6</span>]])       <span class="cm"># shape: (2, 3)</span>
+<span class="fn">print</span>(<span class="tx">m</span>.<span class="tx">shape</span>)              <span class="cm"># (2, 3)  ← always check shape!</span>
+<span class="fn">print</span>(<span class="tx">m</span>[<span class="nm">0</span>, :])              <span class="cm"># row 0:  [1, 2, 3]</span>
+<span class="fn">print</span>(<span class="tx">m</span>[:, <span class="nm">1</span>])              <span class="cm"># col 1:  [2, 5]</span>
+
+<span class="cm"># Common AI shapes you'll encounter:</span>
+<span class="fn">np</span>.<span class="fn">zeros</span>((<span class="nm">32</span>, <span class="nm">512</span>))         <span class="cm"># batch=32, embed_dim=512</span>
+<span class="fn">np</span>.<span class="fn">random</span>.<span class="fn">randn</span>(<span class="nm">4</span>, <span class="nm">8</span>, <span class="nm">64</span>) <span class="cm"># (batch, seq_len, hidden_dim)</span>
+
+<span class="cm"># Broadcasting: shapes align right-to-left</span>
+<span class="tx">vec</span> = <span class="fn">np</span>.<span class="fn">array</span>([<span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">30</span>]) <span class="cm"># shape (3,)</span>
+<span class="fn">print</span>(<span class="tx">m</span> + <span class="tx">vec</span>)              <span class="cm"># adds vec to each row of m</span></pre>
+        <div class="infobox pu">🧠 <strong>Key shapes in AI:</strong> <span class="tag pu">(batch, seq)</span> <span class="tag pu">(batch, features)</span> <span class="tag pu">(seq, embed_dim)</span> <span class="tag pu">(n_heads, seq, seq)</span>. Always print <code>.shape</code> when debugging ML code.</div>
+        <div class="refs">
+          <a href="https://numpy.org/doc/stable/user/quickstart.html">NumPy quickstart</a>
+          <a href="https://numpy.org/doc/stable/user/basics.broadcasting.html">Broadcasting guide</a>
+          <a href="https://numpy.org/doc/stable/reference/routines.linalg.html">Linear algebra</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sh pu">🐼 Pandas — In-memory SQL Table with Python API</div>
+      <div class="card pu">
+        <div class="cl">DataFrame: named columns, typed, indexed, SQL-queryable in memory</div>
+        <div class="cd">Think of a <code>DataFrame</code> as a strongly-typed <code>List&lt;Map&lt;String,Object&gt;&gt;</code> with SQL operations built in. You'll use Pandas for loading training data, cleaning LLM eval datasets, analysing experiment results, and feature engineering.</div>
+        <div class="mantra pu">"DataFrame = SQL table that lives in RAM. Query with Python, not SQL strings."</div>
+        <pre><span class="kw">import</span> <span class="fn">pandas</span> <span class="kw">as</span> <span class="tx">pd</span>
+
+<span class="tx">df</span> = <span class="fn">pd</span>.<span class="fn">read_csv</span>(<span class="st">"evals.csv"</span>)  <span class="cm"># load from file</span>
+<span class="cm"># or build inline:</span>
+<span class="tx">df</span> = <span class="fn">pd</span>.<span class="fn">DataFrame</span>({
+    <span class="st">"prompt"</span>: [<span class="st">"Q1"</span>, <span class="st">"Q2"</span>, <span class="st">"Q3"</span>],
+    <span class="st">"score"</span>:  [<span class="nm">0.9</span>, <span class="nm">0.7</span>, <span class="nm">0.85</span>],
+    <span class="st">"model"</span>:  [<span class="st">"gpt4"</span>, <span class="st">"claude"</span>, <span class="st">"gpt4"</span>]
+})
+
+<span class="fn">print</span>(<span class="tx">df</span>.<span class="fn">head</span>())              <span class="cm"># first 5 rows (≈ SELECT TOP 5)</span>
+<span class="fn">print</span>(<span class="tx">df</span>.<span class="fn">describe</span>())         <span class="cm"># stats: mean, std, min, max</span>
+
+<span class="cm"># Filter rows (≈ WHERE score > 0.8)</span>
+<span class="tx">high</span> = <span class="tx">df</span>[<span class="tx">df</span>[<span class="st">"score"</span>] > <span class="nm">0.8</span>]
+
+<span class="cm"># Group by + aggregate (≈ GROUP BY model)</span>
+<span class="tx">df</span>.<span class="fn">groupby</span>(<span class="st">"model"</span>)[<span class="st">"score"</span>].<span class="fn">mean</span>()
+
+<span class="cm"># Add computed column (≈ SELECT *, score*100 AS pct)</span>
+<span class="tx">df</span>[<span class="st">"pct"</span>] = <span class="tx">df</span>[<span class="st">"score"</span>] * <span class="nm">100</span>
+
+<span class="cm"># Export results</span>
+<span class="tx">df</span>.<span class="fn">to_csv</span>(<span class="st">"results.csv"</span>, <span class="tx">index</span>=<span class="kw">False</span>)</pre>
+        <div class="refs">
+          <a href="https://pandas.pydata.org/docs/user_guide/10min.html">10 min to pandas</a>
+          <a href="https://pandas.pydata.org/docs/getting_started/comparison/comparison_with_sql.html">Pandas vs SQL</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end left -->
+
+  <!-- ── RIGHT ── -->
+  <div>
+
+    <div class="sec">
+      <div class="sh pu">✅ Pydantic — The Backbone of Every AI System</div>
+      <div class="card pu">
+        <div class="cl">Typed, validated, serialisable models — used everywhere in AI pipelines</div>
+        <div class="cd">Pydantic is the single most important library for AI engineering. It does what Java's <code>record</code> + <code>@Valid</code> + Jackson combined do, but in 3 lines. Every serious AI framework (LangChain, FastAPI, the Anthropic SDK) uses Pydantic internally. Structured LLM output parsing relies on it completely.</div>
+        <div class="mantra pu">"Pydantic = Java record + Bean Validation + Jackson. In 3 lines."</div>
+        <pre><span class="kw">from</span> <span class="fn">pydantic</span> <span class="kw">import</span> <span class="fn">BaseModel</span>, <span class="fn">Field</span>, <span class="fn">model_validator</span>
+<span class="kw">from</span> <span class="fn">typing</span> <span class="kw">import</span> <span class="fn">Literal</span>
+
+<span class="kw">class</span> <span class="fn">ToolCall</span>(<span class="fn">BaseModel</span>):            <span class="cm"># ≈ Java record</span>
+    <span class="tx">tool_name</span>: <span class="fn">str</span>
+    <span class="tx">arguments</span>: <span class="fn">dict</span>[<span class="fn">str</span>, <span class="fn">str</span>]
+    <span class="tx">confidence</span>: <span class="fn">float</span> = <span class="fn">Field</span>(
+        <span class="tx">ge</span>=<span class="nm">0.0</span>, <span class="tx">le</span>=<span class="nm">1.0</span>,               <span class="cm"># ≈ @DecimalMin @DecimalMax</span>
+        <span class="tx">description</span>=<span class="st">"0–1 confidence"</span>)
+
+<span class="kw">class</span> <span class="fn">AgentResponse</span>(<span class="fn">BaseModel</span>):
+    <span class="tx">action</span>:  <span class="fn">Literal</span>[<span class="st">"tool_call"</span>, <span class="st">"answer"</span>]  <span class="cm"># enum-like</span>
+    <span class="tx">tool</span>:    <span class="fn">ToolCall</span> | <span class="kw">None</span> = <span class="kw">None</span>
+    <span class="tx">message</span>: <span class="fn">str</span> = <span class="st">""</span>
+
+    <span class="kw">@model_validator</span>(<span class="tx">mode</span>=<span class="st">"after"</span>)   <span class="cm"># ≈ @AssertTrue cross-field</span>
+    <span class="kw">def</span> <span class="fn">check_tool</span>(<span class="tx">self</span>):
+        <span class="kw">if</span> <span class="tx">self</span>.<span class="tx">action</span> == <span class="st">"tool_call"</span> <span class="kw">and not</span> <span class="tx">self</span>.<span class="tx">tool</span>:
+            <span class="kw">raise</span> <span class="fn">ValueError</span>(<span class="st">"tool required"</span>)
+        <span class="kw">return</span> <span class="tx">self</span>
+
+<span class="cm"># Parse JSON from LLM (validates &amp; raises on bad output)</span>
+<span class="tx">resp</span> = <span class="fn">AgentResponse</span>.<span class="fn">model_validate_json</span>(<span class="tx">llm_output</span>)
+<span class="fn">print</span>(<span class="tx">resp</span>.<span class="fn">model_dump</span>())          <span class="cm"># → clean Python dict</span>
+<span class="fn">print</span>(<span class="tx">resp</span>.<span class="fn">model_dump_json</span>())     <span class="cm"># → JSON string (≈ ObjectMapper)</span></pre>
+        <div class="refs">
+          <a href="https://docs.pydantic.dev/latest/">Pydantic v2 docs</a>
+          <a href="https://docs.pydantic.dev/latest/concepts/models/">Models guide</a>
+          <a href="https://docs.pydantic.dev/latest/concepts/validators/">Validators</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sh pu">⚡ asyncio — CompletableFuture for Python</div>
+      <div class="card pu">
+        <div class="cl">Single-threaded event loop: make 100 LLM calls with zero thread overhead</div>
+        <div class="cd">Python's async model uses a single-threaded event loop (like Node.js). <code>async def</code> defines a coroutine. <code>await</code> suspends it while waiting for I/O, letting other coroutines run. This is how you fire off 50 parallel LLM API calls without 50 threads.</div>
+        <div class="mantra pu">"async def = coroutine (lazy promise). await = yield CPU while waiting for I/O."</div>
+        <div class="cmp">
+          <div><span class="ll jv">Java</span>
+<pre><span class="jv">var</span> <span class="tx">futures</span> = <span class="fn">List</span>.<span class="fn">of</span>(
+  <span class="fn">CompletableFuture</span>
+    .<span class="fn">supplyAsync</span>(() ->
+      <span class="fn">callLLM</span>(<span class="st">"p1"</span>)),
+  <span class="fn">CompletableFuture</span>
+    .<span class="fn">supplyAsync</span>(() ->
+      <span class="fn">callLLM</span>(<span class="st">"p2"</span>)));
+<span class="fn">CompletableFuture</span>
+  .<span class="fn">allOf</span>(<span class="tx">futures</span>...).<span class="fn">join</span>();</pre>
+          </div>
+          <div><span class="ll py">Python</span>
+<pre><span class="kw">import</span> <span class="fn">asyncio</span>
+
+<span class="kw">async def</span> <span class="fn">main</span>():
+    <span class="tx">results</span> = <span class="kw">await</span> <span class="fn">asyncio</span>.<span class="fn">gather</span>(
+        <span class="fn">call_llm</span>(<span class="st">"p1"</span>),
+        <span class="fn">call_llm</span>(<span class="st">"p2"</span>),
+    )
+<span class="cm"># gather ≈ allOf()</span></pre>
+          </div>
+        </div>
+        <pre><span class="kw">import</span> <span class="fn">asyncio</span>, <span class="fn">httpx</span>
+
+<span class="kw">async def</span> <span class="fn">call_llm</span>(<span class="tx">prompt</span>: <span class="fn">str</span>) -> <span class="fn">str</span>:
+    <span class="kw">async with</span> <span class="fn">httpx</span>.<span class="fn">AsyncClient</span>() <span class="kw">as</span> <span class="tx">client</span>:
+        <span class="tx">r</span> = <span class="kw">await</span> <span class="tx">client</span>.<span class="fn">post</span>(<span class="st">"https://api.anthropic.com/..."</span>,
+                               <span class="tx">json</span>={<span class="st">"prompt"</span>: <span class="tx">prompt</span>})
+        <span class="kw">return</span> <span class="tx">r</span>.<span class="fn">json</span>()[<span class="st">"content"</span>]
+
+<span class="kw">async def</span> <span class="fn">batch_evaluate</span>(<span class="tx">prompts</span>: <span class="fn">list</span>[<span class="fn">str</span>]) -> <span class="fn">list</span>[<span class="fn">str</span>]:
+    <span class="cm"># Fire all calls concurrently, wait for all to finish</span>
+    <span class="kw">return</span> <span class="kw">await</span> <span class="fn">asyncio</span>.<span class="fn">gather</span>(*[<span class="fn">call_llm</span>(<span class="tx">p</span>) <span class="kw">for</span> <span class="tx">p</span> <span class="kw">in</span> <span class="tx">prompts</span>])
+
+<span class="cm"># Run in a script (entry point):</span>
+<span class="fn">asyncio</span>.<span class="fn">run</span>(<span class="fn">batch_evaluate</span>([<span class="st">"Q1"</span>, <span class="st">"Q2"</span>, <span class="st">"Q3"</span>]))</pre>
+        <div class="infobox pu">⚠️ <strong>Golden rule:</strong> Once you use <code>async def</code>, everything calling it must also be <code>async def</code>. You cannot <code>await</code> from a regular function. Start <code>async</code> at the top and let it flow down.</div>
+        <div class="refs">
+          <a href="https://docs.python.org/3/library/asyncio.html">asyncio docs</a>
+          <a href="https://realpython.com/async-io-python/">Real Python async guide</a>
+          <a href="https://www.python-httpx.org/">httpx async client</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sh pu">📦 Phase 2 Install &amp; Dependency Map</div>
+      <table>
+        <tr><th>Library</th><th>Java equivalent</th><th>pip install</th></tr>
+        <tr><td><code>numpy</code></td><td>primitive <code>double[][]</code></td><td><code>pip install numpy</code></td></tr>
+        <tr><td><code>pandas</code></td><td>JDBC ResultSet + Stream</td><td><code>pip install pandas</code></td></tr>
+        <tr><td><code>pydantic</code></td><td>record + @Valid + Jackson</td><td><code>pip install pydantic</code></td></tr>
+        <tr><td><code>httpx</code></td><td>Java 11 <code>HttpClient</code></td><td><code>pip install httpx</code></td></tr>
+        <tr><td><code>asyncio</code></td><td>CompletableFuture</td><td>stdlib — built-in</td></tr>
+        <tr><td><code>typing</code></td><td>Generics + interfaces</td><td>stdlib — built-in</td></tr>
+      </table>
+    </div>
+
+  </div><!-- end right -->
+  </div><!-- end cols -->
+
+  <div class="pf">
+    <span>Python for AI Engineering · Phase 2 · Page 3/6</span>
+    <span>Refs: <a href="https://numpy.org/doc/">numpy.org</a> · <a href="https://pandas.pydata.org/docs/">pandas docs</a> · <a href="https://docs.pydantic.dev/">pydantic docs</a></span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ PAGE 4 · Phase 3a ═══════════════════════════ -->
+<div class="page">
+  <div class="ph">
+    <div><div class="ph-title">Python for AI Engineering — Java Engineer Edition</div>
+         <div class="ph-sub">Phase 3 · LLM APIs · Prompt Engineering · Structured Outputs · Page 4 of 6</div></div>
+    <span class="badge" style="background:var(--p3)">Phase 3 — LLM APIs &amp; Prompting</span>
+  </div>
+
+  <div class="cols">
+  <!-- ── LEFT ── -->
+  <div>
+
+    <div class="sec">
+      <div class="sh a">🤖 Anthropic &amp; OpenAI SDK — Calling LLMs from Python</div>
+      <div class="card am">
+        <div class="cl">LLM API = typed REST client with message-role protocol</div>
+        <div class="cd">The Anthropic and OpenAI SDKs are well-designed typed clients. Messages follow a strict <strong>role-based protocol</strong>: <code>system</code> sets the AI's persona/instructions, <code>user</code> sends the human turn, <code>assistant</code> holds prior AI replies. Think of it like a structured HTTP request where the body is a conversation thread.</div>
+        <div class="mantra am">"system = config. user = request. assistant = prior response. Chain them for memory."</div>
+        <pre><span class="kw">import</span> <span class="fn">anthropic</span>
+
+<span class="tx">client</span> = <span class="fn">anthropic</span>.<span class="fn">Anthropic</span>()    <span class="cm"># reads ANTHROPIC_API_KEY from env</span>
+
+<span class="cm"># Basic call — synchronous</span>
+<span class="tx">msg</span> = <span class="tx">client</span>.<span class="fn">messages</span>.<span class="fn">create</span>(
+    <span class="tx">model</span>    = <span class="st">"claude-sonnet-4-6"</span>,
+    <span class="tx">max_tokens</span> = <span class="nm">1024</span>,
+    <span class="tx">system</span>   = <span class="st">"You are a senior Java engineer teaching Python."</span>,
+    <span class="tx">messages</span> = [
+        {<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="st">"Explain generators in Python."</span>}
+    ]
+)
+<span class="fn">print</span>(<span class="tx">msg</span>.<span class="tx">content</span>[<span class="nm">0</span>].<span class="tx">text</span>)          <span class="cm"># the response text</span>
+
+<span class="cm"># Multi-turn: maintain conversation history</span>
+<span class="tx">history</span> = []
+<span class="kw">def</span> <span class="fn">chat</span>(<span class="tx">user_input</span>: <span class="fn">str</span>) -> <span class="fn">str</span>:
+    <span class="tx">history</span>.<span class="fn">append</span>({<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="tx">user_input</span>})
+    <span class="tx">resp</span> = <span class="tx">client</span>.<span class="fn">messages</span>.<span class="fn">create</span>(
+        <span class="tx">model</span>=<span class="st">"claude-sonnet-4-6"</span>, <span class="tx">max_tokens</span>=<span class="nm">512</span>,
+        <span class="tx">messages</span>=<span class="tx">history</span>          <span class="cm"># pass the whole history</span>
+    )
+    <span class="tx">reply</span> = <span class="tx">resp</span>.<span class="tx">content</span>[<span class="nm">0</span>].<span class="tx">text</span>
+    <span class="tx">history</span>.<span class="fn">append</span>({<span class="st">"role"</span>: <span class="st">"assistant"</span>, <span class="st">"content"</span>: <span class="tx">reply</span>})
+    <span class="kw">return</span> <span class="tx">reply</span>
+
+<span class="cm"># Async version (for batch processing):</span>
+<span class="kw">import</span> <span class="fn">anthropic</span>
+<span class="tx">aclient</span> = <span class="fn">anthropic</span>.<span class="fn">AsyncAnthropic</span>()
+<span class="kw">async def</span> <span class="fn">async_chat</span>(<span class="tx">prompt</span>: <span class="fn">str</span>) -> <span class="fn">str</span>:
+    <span class="tx">msg</span> = <span class="kw">await</span> <span class="tx">aclient</span>.<span class="fn">messages</span>.<span class="fn">create</span>(
+        <span class="tx">model</span>=<span class="st">"claude-sonnet-4-6"</span>, <span class="tx">max_tokens</span>=<span class="nm">512</span>,
+        <span class="tx">messages</span>=[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="tx">prompt</span>}])
+    <span class="kw">return</span> <span class="tx">msg</span>.<span class="tx">content</span>[<span class="nm">0</span>].<span class="tx">text</span></pre>
+        <div class="refs">
+          <a href="https://docs.anthropic.com/en/api/getting-started">Anthropic API docs</a>
+          <a href="https://platform.openai.com/docs/quickstart">OpenAI quickstart</a>
+          <a href="https://pypi.org/project/anthropic/">anthropic PyPI</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sh a">📝 Prompt Engineering — The LLM Equivalent of API Design</div>
+      <div class="card am">
+        <div class="cl">Prompting IS programming — treat it with the same rigour as writing a contract</div>
+        <div class="cd">As a staff engineer, think of the system prompt as an API specification for the model's behaviour. The patterns below are the most important ones for building reliable AI systems.</div>
+        <div class="mantra am">"A good system prompt = clear contract. A bad one = undefined behaviour."</div>
+        <pre><span class="cm"># Pattern 1: Zero-shot — just ask clearly</span>
+<span class="tx">system</span> = <span class="st">"""You are a code reviewer. You:
+- Identify bugs, not style
+- Output ONLY JSON, no prose
+- Always include line numbers"""</span>
+
+<span class="cm"># Pattern 2: Few-shot — show don't tell</span>
+<span class="tx">few_shot</span> = <span class="st">"""Classify sentiment. Examples:
+Input: "Great product!" → positive
+Input: "Terrible service" → negative
+Input: "It's okay"       → neutral
+Now classify: "Pretty good for the price" →"""</span>
+
+<span class="cm"># Pattern 3: Chain-of-Thought (CoT)</span>
+<span class="tx">cot</span> = <span class="st">"""Solve step-by-step. Show your reasoning
+before giving the final answer. Format:
+REASONING: &lt;steps&gt;
+ANSWER: &lt;final&gt;"""</span>
+
+<span class="cm"># Pattern 4: Role + Constraints</span>
+<span class="tx">expert</span> = <span class="st">"""You are a PostgreSQL expert.
+Rules:
+1. Never suggest full table scans
+2. Always explain the query plan
+3. Respond in under 200 words"""</span></pre>
+        <div class="infobox am">💡 <strong>Key insight:</strong> Temperature controls creativity. <code>temp=0.0</code> for deterministic tasks (code, JSON extraction, classification). <code>temp=0.7–1.0</code> for creative tasks. Use <code>0.0</code> by default in agent loops.</div>
+        <div class="refs">
+          <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview">Anthropic prompt guide</a>
+          <a href="https://www.promptingguide.ai/">Prompting Guide (open)</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end left -->
+
+  <!-- ── RIGHT ── -->
+  <div>
+
+    <div class="sec">
+      <div class="sh a">🔧 Tool Calling — LLM-Driven Function Dispatch</div>
+      <div class="card am">
+        <div class="cl">Tool calling = the LLM decides which function to call and with what arguments</div>
+        <div class="cd">Tool calling (function calling) is the core primitive of agentic systems. You define tools as JSON schemas (like RPC IDLs), the LLM decides which to call, you execute it, and return the result. The LLM orchestrates; your code executes. This is the fundamental agent loop.</div>
+        <div class="mantra am">"Define the tools. Let the LLM dispatch. You just execute. That's the agent loop."</div>
+        <pre><span class="cm"># Step 1: Define tools as JSON schema (≈ RPC method specs)</span>
+<span class="tx">tools</span> = [{
+    <span class="st">"name"</span>: <span class="st">"search_codebase"</span>,
+    <span class="st">"description"</span>: <span class="st">"Search the codebase for a pattern"</span>,
+    <span class="st">"input_schema"</span>: {
+        <span class="st">"type"</span>: <span class="st">"object"</span>,
+        <span class="st">"properties"</span>: {
+            <span class="st">"query"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>, <span class="st">"description"</span>: <span class="st">"regex pattern"</span>},
+            <span class="st">"path"</span>:  {<span class="st">"type"</span>: <span class="st">"string"</span>, <span class="st">"description"</span>: <span class="st">"directory to search"</span>}
+        },
+        <span class="st">"required"</span>: [<span class="st">"query"</span>]
+    }
+}]
+
+<span class="cm"># Step 2: LLM decides whether/which tool to call</span>
+<span class="tx">response</span> = <span class="tx">client</span>.<span class="fn">messages</span>.<span class="fn">create</span>(
+    <span class="tx">model</span>=<span class="st">"claude-sonnet-4-6"</span>, <span class="tx">max_tokens</span>=<span class="nm">512</span>,
+    <span class="tx">tools</span>=<span class="tx">tools</span>,
+    <span class="tx">messages</span>=[{<span class="st">"role"</span>: <span class="st">"user"</span>,
+               <span class="st">"content"</span>: <span class="st">"Find all usages of sys_attachment in glide/"</span>}]
+)
+
+<span class="cm"># Step 3: Check if LLM wants to call a tool</span>
+<span class="kw">if</span> <span class="tx">response</span>.<span class="tx">stop_reason</span> == <span class="st">"tool_use"</span>:
+    <span class="tx">tool_block</span> = <span class="fn">next</span>(
+        <span class="tx">b</span> <span class="kw">for</span> <span class="tx">b</span> <span class="kw">in</span> <span class="tx">response</span>.<span class="tx">content</span>
+        <span class="kw">if</span> <span class="tx">b</span>.<span class="tx">type</span> == <span class="st">"tool_use"</span>)
+    <span class="tx">tool_name</span> = <span class="tx">tool_block</span>.<span class="tx">name</span>      <span class="cm"># "search_codebase"</span>
+    <span class="tx">tool_args</span> = <span class="tx">tool_block</span>.<span class="tx">input</span>      <span class="cm"># {"query": "sys_attachment"}</span>
+
+<span class="cm"># Step 4: Execute and return result to LLM</span>
+<span class="tx">result</span> = <span class="tx">tool_registry</span>[<span class="tx">tool_name</span>](**<span class="tx">tool_args</span>)
+<span class="tx">messages</span>.<span class="fn">append</span>({<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: [{
+    <span class="st">"type"</span>: <span class="st">"tool_result"</span>,
+    <span class="st">"tool_use_id"</span>: <span class="tx">tool_block</span>.<span class="tx">id</span>, <span class="st">"content"</span>: <span class="fn">str</span>(<span class="tx">result</span>)
+}]})</pre>
+        <div class="refs">
+          <a href="https://docs.anthropic.com/en/docs/build-with-claude/tool-use">Anthropic tool use docs</a>
+          <a href="https://platform.openai.com/docs/guides/function-calling">OpenAI function calling</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sh a">📐 Structured Outputs — Reliable JSON from LLMs</div>
+      <div class="card am">
+        <div class="cl">Force LLMs to return validated, typed data — never parse free-text in production</div>
+        <div class="cd">Free-text LLM output is unreliable in production systems. The pattern is: define a Pydantic model → generate JSON schema → pass as instruction → validate response. Some APIs support native structured output mode (OpenAI) or tool-based JSON forcing (Anthropic).</div>
+        <div class="mantra am">"Never regex-parse LLM output. Define a schema. Validate. Throw on failure."</div>
+        <pre><span class="kw">from</span> <span class="fn">pydantic</span> <span class="kw">import</span> <span class="fn">BaseModel</span>
+<span class="kw">import</span> <span class="fn">json</span>
+
+<span class="kw">class</span> <span class="fn">CodeReview</span>(<span class="fn">BaseModel</span>):
+    <span class="tx">severity</span>: <span class="fn">str</span>              <span class="cm"># "critical" | "warning" | "info"</span>
+    <span class="tx">issues</span>:   <span class="fn">list</span>[<span class="fn">str</span>]
+    <span class="tx">score</span>:    <span class="fn">int</span>               <span class="cm"># 1-10</span>
+
+<span class="tx">schema</span> = <span class="fn">CodeReview</span>.<span class="fn">model_json_schema</span>()  <span class="cm"># generate schema</span>
+
+<span class="tx">prompt</span> = <span class="st">f"""Review this code and respond ONLY with valid JSON
+matching this schema:
+</span><span class="kw">{json.dumps(schema, indent=2)}</span><span class="st">
+No prose. No markdown. JSON only."""</span>
+
+<span class="tx">raw</span> = <span class="fn">call_llm</span>(<span class="tx">prompt</span>)          <span class="cm"># get LLM response</span>
+
+<span class="cm"># Parse and validate — raises ValidationError on bad output</span>
+<span class="kw">try</span>:
+    <span class="tx">review</span> = <span class="fn">CodeReview</span>.<span class="fn">model_validate_json</span>(<span class="tx">raw</span>)
+    <span class="fn">print</span>(<span class="st">f"Score: </span><span class="kw">{review.score}</span><span class="st">/10"</span>)
+<span class="kw">except</span> <span class="fn">Exception</span> <span class="kw">as</span> <span class="tx">e</span>:
+    <span class="fn">retry_with_correction</span>(<span class="tx">e</span>)    <span class="cm"># retry with error feedback</span></pre>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sh a">📊 Token Usage &amp; Cost Awareness</div>
+      <div class="card am">
+        <div class="cl">Monitor token usage — it's the "CPU cycles" of LLM systems</div>
+        <pre><span class="tx">response</span> = <span class="tx">client</span>.<span class="fn">messages</span>.<span class="fn">create</span>(...)
+<span class="tx">usage</span> = <span class="tx">response</span>.<span class="tx">usage</span>
+<span class="fn">print</span>(<span class="st">f"In: </span><span class="kw">{usage.input_tokens}</span><span class="st"> Out: </span><span class="kw">{usage.output_tokens}</span><span class="st">"</span>)
+
+<span class="cm"># Rough cost calc (check current pricing):</span>
+<span class="tx">cost</span> = (<span class="tx">usage</span>.<span class="tx">input_tokens</span>  / <span class="nm">1_000_000</span>) * <span class="nm">3.00</span>  <span class="cm"># input $/1M</span>
+      + (<span class="tx">usage</span>.<span class="tx">output_tokens</span> / <span class="nm">1_000_000</span>) * <span class="nm">15.00</span> <span class="cm"># output $/1M</span></pre>
+        <div class="refs">
+          <a href="https://docs.anthropic.com/en/docs/about-claude/models/overview">Anthropic models &amp; pricing</a>
+          <a href="https://platform.openai.com/tokenizer">OpenAI tokenizer</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end right -->
+  </div><!-- end cols -->
+
+  <div class="pf">
+    <span>Python for AI Engineering · Phase 3 · Page 4/6</span>
+    <span>Refs: <a href="https://docs.anthropic.com/">docs.anthropic.com</a> · <a href="https://platform.openai.com/docs">platform.openai.com/docs</a> · <a href="https://www.promptingguide.ai/">promptingguide.ai</a></span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ PAGE 5 · Phase 3b ═══════════════════════════ -->
+<div class="page">
+  <div class="ph">
+    <div><div class="ph-title">Python for AI Engineering — Java Engineer Edition</div>
+         <div class="ph-sub">Phase 3 · RAG · Vector Stores · Embeddings · Streaming · Page 5 of 6</div></div>
+    <span class="badge" style="background:var(--p3)">Phase 3 — LLM APIs &amp; Prompting</span>
+  </div>
+
+  <div class="cols">
+  <!-- ── LEFT ── -->
+  <div>
+
+    <div class="sec">
+      <div class="sh a">🔍 Embeddings — Meaning as Numbers</div>
+      <div class="card am">
+        <div class="cl">Convert text to dense vectors that encode semantic meaning</div>
+        <div class="cd">An embedding is a fixed-length list of floats (e.g. 1536 dimensions) that represents the <em>meaning</em> of a piece of text. Similar meanings produce similar vectors. This is how semantic search works: find vectors close to the query vector rather than matching keywords. Think of it as "is-near-in-concept" instead of <code>LIKE '%keyword%'</code>.</div>
+        <div class="mantra am">"Embeddings = GPS coordinates for meaning. Nearby coords = nearby concepts."</div>
+        <pre><span class="kw">import</span> <span class="fn">anthropic</span>
+<span class="kw">import</span> <span class="fn">numpy</span> <span class="kw">as</span> <span class="tx">np</span>
+
+<span class="tx">client</span> = <span class="fn">anthropic</span>.<span class="fn">Anthropic</span>()
+
+<span class="cm"># Generate embeddings (Voyage AI via Anthropic)</span>
+<span class="kw">from</span> <span class="fn">voyageai</span> <span class="kw">import</span> <span class="fn">Client</span>
+<span class="tx">vo</span> = <span class="fn">Client</span>()
+<span class="tx">docs</span> = [<span class="st">"Python generators pause execution"</span>,
+        <span class="st">"Java iterators use hasNext/next"</span>,
+        <span class="st">"async/await yields control"</span>]
+
+<span class="tx">result</span>  = <span class="tx">vo</span>.<span class="fn">embed</span>(<span class="tx">docs</span>, <span class="tx">model</span>=<span class="st">"voyage-3"</span>)
+<span class="tx">vectors</span> = <span class="fn">np</span>.<span class="fn">array</span>(<span class="tx">result</span>.<span class="tx">embeddings</span>)  <span class="cm"># shape: (3, 1024)</span>
+
+<span class="cm"># Cosine similarity: how similar are two meanings?</span>
+<span class="kw">def</span> <span class="fn">cosine_sim</span>(<span class="tx">a</span>, <span class="tx">b</span>):
+    <span class="kw">return</span> <span class="fn">np</span>.<span class="fn">dot</span>(<span class="tx">a</span>, <span class="tx">b</span>) / (<span class="fn">np</span>.<span class="fn">linalg</span>.<span class="fn">norm</span>(<span class="tx">a</span>) * <span class="fn">np</span>.<span class="fn">linalg</span>.<span class="fn">norm</span>(<span class="tx">b</span>))
+
+<span class="cm"># Generators vs iterators: very similar (≈ 0.92)</span>
+<span class="fn">print</span>(<span class="fn">cosine_sim</span>(<span class="tx">vectors</span>[<span class="nm">0</span>], <span class="tx">vectors</span>[<span class="nm">1</span>]))
+
+<span class="cm"># Practical: find most relevant doc for a query</span>
+<span class="tx">query_vec</span> = <span class="fn">np</span>.<span class="fn">array</span>(<span class="tx">vo</span>.<span class="fn">embed</span>(
+    [<span class="st">"how to lazily generate values"</span>],
+    <span class="tx">model</span>=<span class="st">"voyage-3"</span>).<span class="tx">embeddings</span>[<span class="nm">0</span>])
+<span class="tx">sims</span>    = <span class="tx">vectors</span> @ <span class="tx">query_vec</span>    <span class="cm"># dot product with all docs</span>
+<span class="tx">best</span>    = <span class="fn">np</span>.<span class="fn">argmax</span>(<span class="tx">sims</span>)        <span class="cm"># index of most similar doc</span>
+<span class="fn">print</span>(<span class="tx">docs</span>[<span class="tx">best</span>])                <span class="cm"># "Python generators pause execution"</span></pre>
+        <div class="refs">
+          <a href="https://docs.anthropic.com/en/docs/build-with-claude/embeddings">Anthropic embeddings guide</a>
+          <a href="https://docs.voyageai.com/">Voyage AI docs</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sh a">🗄 Vector Databases — Semantic Search at Scale</div>
+      <div class="card am">
+        <div class="cl">Store millions of embeddings; query by semantic similarity in milliseconds</div>
+        <div class="cd">A vector database is like a distributed index over embedding space. Instead of B-tree index on a key, it uses approximate nearest-neighbour (ANN) algorithms (HNSW, IVF) over float arrays. For AI agents, the vector DB is the long-term memory — it stores chunked documents that the agent retrieves at query time.</div>
+        <div class="mantra am">"Vector DB = semantic search index. Nearest neighbour, not keyword match."</div>
+        <pre><span class="cm"># ChromaDB: local, dev-friendly vector store</span>
+<span class="kw">import</span> <span class="fn">chromadb</span>
+
+<span class="tx">db</span>   = <span class="fn">chromadb</span>.<span class="fn">Client</span>()
+<span class="tx">coll</span> = <span class="tx">db</span>.<span class="fn">create_collection</span>(<span class="st">"glide_docs"</span>)
+
+<span class="cm"># Index your docs (add embeddings + metadata + source text)</span>
+<span class="tx">coll</span>.<span class="fn">add</span>(
+    <span class="tx">ids</span>        = [<span class="st">"doc1"</span>, <span class="st">"doc2"</span>],
+    <span class="tx">documents</span>  = [<span class="st">"GlideRecord queries the DB table"</span>,
+                  <span class="st">"sys_attachment stores file blobs"</span>],
+    <span class="tx">metadatas</span>  = [{<span class="st">"source"</span>: <span class="st">"wiki"</span>, <span class="st">"page"</span>: <span class="nm">42</span>},
+                  {<span class="st">"source"</span>: <span class="st">"wiki"</span>, <span class="st">"page"</span>: <span class="nm">88</span>}]
+)
+
+<span class="cm"># Semantic search: find top-3 most relevant docs</span>
+<span class="tx">results</span> = <span class="tx">coll</span>.<span class="fn">query</span>(
+    <span class="tx">query_texts</span> = [<span class="st">"how do I query a ServiceNow table"</span>],
+    <span class="tx">n_results</span>   = <span class="nm">3</span>
+)
+<span class="fn">print</span>(<span class="tx">results</span>[<span class="st">"documents"</span>])  <span class="cm"># ranked by similarity</span></pre>
+        <div class="infobox am">🗃 <strong>Options:</strong> <strong>Chroma</strong> (local/OSS, dev) · <strong>Pinecone</strong> (managed, prod) · <strong>pgvector</strong> (Postgres extension) · <strong>Weaviate</strong> (self-hosted). For RaptorDB/PostgreSQL, pgvector is the natural fit.</div>
+        <div class="refs">
+          <a href="https://docs.trychroma.com/">ChromaDB docs</a>
+          <a href="https://github.com/pgvector/pgvector">pgvector</a>
+          <a href="https://docs.pinecone.io/">Pinecone docs</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end left -->
+
+  <!-- ── RIGHT ── -->
+  <div>
+
+    <div class="sec">
+      <div class="sh a">📚 RAG — Retrieval-Augmented Generation</div>
+      <div class="card am">
+        <div class="cl">Give the LLM your private data at query time — no fine-tuning required</div>
+        <div class="cd">RAG (Retrieval Augmented Generation) is the dominant pattern for grounding LLMs in private or up-to-date data. The flow: <strong>chunk</strong> your docs → <strong>embed</strong> each chunk → <strong>store</strong> in vector DB → at query time, <strong>retrieve</strong> top-K similar chunks → <strong>inject</strong> into prompt → LLM answers with context. Think of it as just-in-time loading of relevant memory into the model's context window.</div>
+        <div class="mantra am">"RAG = give the LLM just-in-time notes from your private library."</div>
+        <pre><span class="cm"># Full RAG pipeline in Python</span>
+<span class="kw">def</span> <span class="fn">chunk_text</span>(<span class="tx">text</span>: <span class="fn">str</span>, <span class="tx">size</span>=<span class="nm">500</span>) -> <span class="fn">list</span>[<span class="fn">str</span>]:
+    <span class="cm"># Split into overlapping chunks of ~500 chars</span>
+    <span class="tx">words</span> = <span class="tx">text</span>.<span class="fn">split</span>()
+    <span class="kw">return</span> [<span class="st">" "</span>.<span class="fn">join</span>(<span class="tx">words</span>[<span class="tx">i</span>:<span class="tx">i</span>+<span class="tx">size</span>]) <span class="kw">for</span> <span class="tx">i</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">0</span>, <span class="fn">len</span>(<span class="tx">words</span>), <span class="tx">size</span>-<span class="nm">50</span>)]
+
+<span class="kw">def</span> <span class="fn">build_index</span>(<span class="tx">documents</span>: <span class="fn">list</span>[<span class="fn">str</span>]):
+    <span class="tx">collection</span> = <span class="tx">chroma_db</span>.<span class="fn">create_collection</span>(<span class="st">"kb"</span>)
+    <span class="tx">all_chunks</span>  = [<span class="tx">c</span> <span class="kw">for</span> <span class="tx">doc</span> <span class="kw">in</span> <span class="tx">documents</span> <span class="kw">for</span> <span class="tx">c</span> <span class="kw">in</span> <span class="fn">chunk_text</span>(<span class="tx">doc</span>)]
+    <span class="tx">collection</span>.<span class="fn">add</span>(<span class="tx">documents</span>=<span class="tx">all_chunks</span>,
+                   <span class="tx">ids</span>=[<span class="fn">str</span>(<span class="tx">i</span>) <span class="kw">for</span> <span class="tx">i</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="fn">len</span>(<span class="tx">all_chunks</span>))])
+    <span class="kw">return</span> <span class="tx">collection</span>
+
+<span class="kw">def</span> <span class="fn">rag_answer</span>(<span class="tx">question</span>: <span class="fn">str</span>, <span class="tx">collection</span>) -> <span class="fn">str</span>:
+    <span class="cm"># 1. Retrieve top-3 relevant chunks</span>
+    <span class="tx">hits</span>    = <span class="tx">collection</span>.<span class="fn">query</span>(<span class="tx">query_texts</span>=[<span class="tx">question</span>], <span class="tx">n_results</span>=<span class="nm">3</span>)
+    <span class="tx">context</span> = <span class="st">"\n\n"</span>.<span class="fn">join</span>(<span class="tx">hits</span>[<span class="st">"documents"</span>][<span class="nm">0</span>])
+    <span class="cm"># 2. Inject context into prompt</span>
+    <span class="tx">prompt</span>  = <span class="st">f"""Use the context below to answer the question.
+If unsure, say "I don't know".
+Context: </span><span class="kw">{context}</span><span class="st">
+Question: </span><span class="kw">{question}</span><span class="st">"""</span>
+    <span class="cm"># 3. LLM answers with grounded context</span>
+    <span class="kw">return</span> <span class="fn">call_llm</span>(<span class="tx">prompt</span>)</pre>
+        <div class="refs">
+          <a href="https://docs.anthropic.com/en/docs/build-with-claude/retrieval-augmented-generation">Anthropic RAG guide</a>
+          <a href="https://python.langchain.com/docs/tutorials/rag/">LangChain RAG tutorial</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sh a">🌊 Streaming — Real-time Token Output</div>
+      <div class="card am">
+        <div class="cl">Stream tokens as they're generated — better UX and lower time-to-first-token</div>
+        <div class="cd">LLMs generate one token at a time. Streaming delivers each token as it's produced rather than waiting for the full response. This is critical for interactive UIs and agentic thought visibility. Both the Anthropic SDK and OpenAI SDK support streaming via context managers and generators.</div>
+        <div class="mantra am">"Don't wait for the full response. Stream tokens like a log tail."</div>
+        <pre><span class="cm"># Sync streaming with Anthropic SDK</span>
+<span class="kw">with</span> <span class="tx">client</span>.<span class="fn">messages</span>.<span class="fn">stream</span>(
+    <span class="tx">model</span>      = <span class="st">"claude-sonnet-4-6"</span>,
+    <span class="tx">max_tokens</span> = <span class="nm">1024</span>,
+    <span class="tx">messages</span>   = [{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="tx">prompt</span>}]
+) <span class="kw">as</span> <span class="tx">stream</span>:
+    <span class="kw">for</span> <span class="tx">text</span> <span class="kw">in</span> <span class="tx">stream</span>.<span class="fn">text_stream</span>:  <span class="cm"># generator of tokens</span>
+        <span class="fn">print</span>(<span class="tx">text</span>, <span class="tx">end</span>=<span class="st">""</span>, <span class="tx">flush</span>=<span class="kw">True</span>)
+
+<span class="cm"># Async streaming (for FastAPI / web endpoints)</span>
+<span class="kw">async def</span> <span class="fn">stream_response</span>(<span class="tx">prompt</span>):
+    <span class="kw">async with</span> <span class="tx">aclient</span>.<span class="fn">messages</span>.<span class="fn">stream</span>(
+        <span class="tx">model</span>=<span class="st">"claude-sonnet-4-6"</span>, <span class="tx">max_tokens</span>=<span class="nm">512</span>,
+        <span class="tx">messages</span>=[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="tx">prompt</span>}]
+    ) <span class="kw">as</span> <span class="tx">stream</span>:
+        <span class="kw">async for</span> <span class="tx">text</span> <span class="kw">in</span> <span class="tx">stream</span>.<span class="fn">text_stream</span>:
+            <span class="kw">yield</span> <span class="tx">text</span>              <span class="cm"># SSE to frontend</span></pre>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sh a">🔐 Environment &amp; Key Management</div>
+      <div class="card am">
+        <div class="cl">Never hardcode API keys — use environment variables</div>
+        <pre><span class="cm"># .env file (never commit this!)</span>
+<span class="cm"># ANTHROPIC_API_KEY=sk-ant-...</span>
+<span class="cm"># OPENAI_API_KEY=sk-...</span>
+
+<span class="kw">from</span> <span class="fn">dotenv</span> <span class="kw">import</span> <span class="fn">load_dotenv</span>
+<span class="kw">import</span> <span class="fn">os</span>
+
+<span class="fn">load_dotenv</span>()                    <span class="cm"># reads .env into os.environ</span>
+<span class="tx">key</span> = <span class="fn">os</span>.<span class="fn">getenv</span>(<span class="st">"ANTHROPIC_API_KEY"</span>)
+
+<span class="cm"># SDKs auto-read from env — no explicit key needed:</span>
+<span class="tx">client</span> = <span class="fn">anthropic</span>.<span class="fn">Anthropic</span>()   <span class="cm"># reads ANTHROPIC_API_KEY auto</span></pre>
+        <div class="refs">
+          <a href="https://pypi.org/project/python-dotenv/">python-dotenv</a>
+          <a href="https://docs.anthropic.com/en/api/getting-started">API auth guide</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end right -->
+  </div><!-- end cols -->
+
+  <div class="pf">
+    <span>Python for AI Engineering · Phase 3 · Page 5/6</span>
+    <span>Refs: <a href="https://docs.trychroma.com/">chromadb</a> · <a href="https://docs.voyageai.com/">voyageai</a> · <a href="https://github.com/pgvector/pgvector">pgvector</a></span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ PAGE 6 · Phase 4 ═══════════════════════════ -->
+<div class="page">
+  <div class="ph">
+    <div><div class="ph-title">Python for AI Engineering — Java Engineer Edition</div>
+         <div class="ph-sub">Phase 4 · Agentic Frameworks · Orchestration · Memory · Observability · Page 6 of 6</div></div>
+    <span class="badge" style="background:var(--p4)">Phase 4 — Agentic Systems</span>
+  </div>
+
+  <div class="cols">
+  <!-- ── LEFT ── -->
+  <div>
+
+    <div class="sec">
+      <div class="sh pk">🤖 The Agent Loop — Distributed Systems You Already Know</div>
+      <div class="card pk">
+        <div class="cl">Agent = LLM + Tools + Memory + Loop. It's a microservice with a reasoning engine.</div>
+        <div class="cd">An AI agent is just a loop: observe → reason → act → observe again. The LLM is the reasoning engine; tools are external services it can call; memory is state management. As a distributed systems engineer, you already know the hard problems — consistency, fault tolerance, observability — they apply here exactly the same way.</div>
+        <div class="mantra pk">"Agent loop = event-driven microservice where the event handler is an LLM."</div>
+        <pre><span class="kw">from</span> <span class="fn">anthropic</span> <span class="kw">import</span> <span class="fn">Anthropic</span>
+
+<span class="kw">def</span> <span class="fn">run_agent</span>(<span class="tx">user_goal</span>: <span class="fn">str</span>, <span class="tx">tools</span>: <span class="fn">dict</span>) -> <span class="fn">str</span>:
+    <span class="tx">client</span>   = <span class="fn">Anthropic</span>()
+    <span class="tx">messages</span> = [{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="tx">user_goal</span>}]
+    <span class="tx">tool_specs</span> = [<span class="fn">get_spec</span>(<span class="tx">t</span>) <span class="kw">for</span> <span class="tx">t</span> <span class="kw">in</span> <span class="tx">tools</span>.<span class="fn">values</span>()]
+
+    <span class="kw">while True</span>:                           <span class="cm"># the agent loop</span>
+        <span class="tx">resp</span> = <span class="tx">client</span>.<span class="fn">messages</span>.<span class="fn">create</span>(
+            <span class="tx">model</span>=<span class="st">"claude-sonnet-4-6"</span>, <span class="tx">max_tokens</span>=<span class="nm">4096</span>,
+            <span class="tx">tools</span>=<span class="tx">tool_specs</span>, <span class="tx">messages</span>=<span class="tx">messages</span>)
+
+        <span class="kw">if</span> <span class="tx">resp</span>.<span class="tx">stop_reason</span> == <span class="st">"end_turn"</span>:   <span class="cm"># done — return answer</span>
+            <span class="kw">return</span> <span class="tx">resp</span>.<span class="tx">content</span>[<span class="nm">0</span>].<span class="tx">text</span>
+
+        <span class="cm"># LLM wants to call tools — execute them</span>
+        <span class="tx">tool_results</span> = []
+        <span class="kw">for</span> <span class="tx">block</span> <span class="kw">in</span> <span class="tx">resp</span>.<span class="tx">content</span>:
+            <span class="kw">if</span> <span class="tx">block</span>.<span class="tx">type</span> == <span class="st">"tool_use"</span>:
+                <span class="tx">fn</span>     = <span class="tx">tools</span>[<span class="tx">block</span>.<span class="tx">name</span>]    <span class="cm"># dispatch by name</span>
+                <span class="tx">result</span> = <span class="fn">fn</span>(**<span class="tx">block</span>.<span class="tx">input</span>)    <span class="cm"># execute</span>
+                <span class="tx">tool_results</span>.<span class="fn">append</span>({
+                    <span class="st">"type"</span>: <span class="st">"tool_result"</span>,
+                    <span class="st">"tool_use_id"</span>: <span class="tx">block</span>.<span class="tx">id</span>,
+                    <span class="st">"content"</span>: <span class="fn">str</span>(<span class="tx">result</span>)
+                })
+        <span class="cm"># Append LLM turn + tool results, loop again</span>
+        <span class="tx">messages</span> += [
+            {<span class="st">"role"</span>: <span class="st">"assistant"</span>, <span class="st">"content"</span>: <span class="tx">resp</span>.<span class="tx">content</span>},
+            {<span class="st">"role"</span>: <span class="st">"user"</span>,      <span class="st">"content"</span>: <span class="tx">tool_results</span>}
+        ]</pre>
+        <div class="infobox pk">🔁 <strong>Loop guard:</strong> Always add a max_iterations safeguard. Agents can loop forever on ambiguous goals — treat it like a circuit breaker for infinite retries.</div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sh pk">🧠 Memory Patterns — State Management for Agents</div>
+      <div class="card pk">
+        <div class="cl">Short-term = context window. Long-term = vector DB or KV store.</div>
+        <div class="cd">Agents have two memory tiers. <strong>Short-term:</strong> the conversation history (messages list) — fast, expensive per-token, lost when context fills. <strong>Long-term:</strong> external storage queried at runtime — unlimited, but retrieval adds latency. This maps exactly to L1/L2 cache vs heap in distributed systems thinking.</div>
+        <div class="mantra pk">"Context window = L1 cache (fast, tiny). Vector DB = disk (slow, unlimited)."</div>
+        <pre><span class="kw">class</span> <span class="fn">AgentMemory</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="tx">self</span>, <span class="tx">max_turns</span>=<span class="nm">20</span>):
+        <span class="tx">self</span>.<span class="tx">short_term</span>  = []           <span class="cm"># sliding window of messages</span>
+        <span class="tx">self</span>.<span class="tx">long_term</span>   = <span class="fn">ChromaDB</span>()  <span class="cm"># vector store for summaries</span>
+        <span class="tx">self</span>.<span class="tx">max_turns</span>   = <span class="tx">max_turns</span>
+
+    <span class="kw">def</span> <span class="fn">add</span>(<span class="tx">self</span>, <span class="tx">message</span>):
+        <span class="tx">self</span>.<span class="tx">short_term</span>.<span class="fn">append</span>(<span class="tx">message</span>)
+        <span class="kw">if</span> <span class="fn">len</span>(<span class="tx">self</span>.<span class="tx">short_term</span>) > <span class="tx">self</span>.<span class="tx">max_turns</span>:
+            <span class="tx">old</span> = <span class="tx">self</span>.<span class="tx">short_term</span>.<span class="fn">pop</span>(<span class="nm">0</span>)  <span class="cm"># evict oldest</span>
+            <span class="tx">self</span>.<span class="tx">long_term</span>.<span class="fn">add</span>(<span class="tx">old</span>)       <span class="cm"># archive to vector store</span>
+
+    <span class="kw">def</span> <span class="fn">recall</span>(<span class="tx">self</span>, <span class="tx">query</span>: <span class="fn">str</span>) -> <span class="fn">list</span>:
+        <span class="cm"># Retrieve relevant past context at query time</span>
+        <span class="kw">return</span> <span class="tx">self</span>.<span class="tx">long_term</span>.<span class="fn">query</span>(<span class="tx">query</span>, <span class="tx">n</span>=<span class="nm">3</span>)</pre>
+      </div>
+    </div>
+
+  </div><!-- end left -->
+
+  <!-- ── RIGHT ── -->
+  <div>
+
+    <div class="sec">
+      <div class="sh pk">🔬 LangChain &amp; LangGraph — When to Use a Framework</div>
+      <div class="card pk">
+        <div class="cl">Use frameworks for complex multi-agent graphs. Use raw SDK for simple agents.</div>
+        <div class="cd">LangChain provides abstractions for chains, retrievers, and tool-calling. LangGraph models agents as directed graphs with cycles — useful for multi-agent systems where agents hand off to other agents. <strong>Rule of thumb:</strong> if your agent logic fits in 100 lines, use the raw SDK. Add LangChain when you need a retriever pipeline, multi-agent routing, or built-in retry/fallback logic.</div>
+        <pre><span class="cm"># LangChain: simple RAG chain</span>
+<span class="kw">from</span> <span class="fn">langchain_anthropic</span> <span class="kw">import</span> <span class="fn">ChatAnthropic</span>
+<span class="kw">from</span> <span class="fn">langchain_core.prompts</span> <span class="kw">import</span> <span class="fn">ChatPromptTemplate</span>
+
+<span class="tx">llm</span>    = <span class="fn">ChatAnthropic</span>(<span class="tx">model</span>=<span class="st">"claude-sonnet-4-6"</span>)
+<span class="tx">prompt</span> = <span class="fn">ChatPromptTemplate</span>.<span class="fn">from_messages</span>([
+    (<span class="st">"system"</span>, <span class="st">"You are a helpful assistant."</span>),
+    (<span class="st">"user"</span>,   <span class="st">"{input}"</span>),
+])
+<span class="tx">chain</span>  = <span class="tx">prompt</span> | <span class="tx">llm</span>   <span class="cm"># pipe operator = chain composition</span>
+<span class="tx">result</span> = <span class="tx">chain</span>.<span class="fn">invoke</span>({<span class="st">"input"</span>: <span class="st">"Explain RAG in 2 sentences"</span>})
+
+<span class="cm"># LangGraph: multi-agent state machine</span>
+<span class="kw">from</span> <span class="fn">langgraph.graph</span> <span class="kw">import</span> <span class="fn">StateGraph</span>
+
+<span class="tx">graph</span> = <span class="fn">StateGraph</span>(<span class="tx">AgentState</span>)
+<span class="tx">graph</span>.<span class="fn">add_node</span>(<span class="st">"planner"</span>,   <span class="fn">plan_agent</span>)   <span class="cm"># ≈ service node</span>
+<span class="tx">graph</span>.<span class="fn">add_node</span>(<span class="st">"executor"</span>,  <span class="fn">exec_agent</span>)
+<span class="tx">graph</span>.<span class="fn">add_node</span>(<span class="st">"reviewer"</span>,  <span class="fn">review_agent</span>)
+<span class="tx">graph</span>.<span class="fn">add_edge</span>(<span class="st">"planner"</span>,  <span class="st">"executor"</span>)   <span class="cm"># ≈ message routing</span>
+<span class="tx">graph</span>.<span class="fn">add_edge</span>(<span class="st">"executor"</span>, <span class="st">"reviewer"</span>)
+<span class="tx">app</span>   = <span class="tx">graph</span>.<span class="fn">compile</span>()
+<span class="tx">app</span>.<span class="fn">invoke</span>({<span class="st">"goal"</span>: <span class="st">"write and test a Python module"</span>})</span></pre>
+        <div class="refs">
+          <a href="https://python.langchain.com/docs/">LangChain Python docs</a>
+          <a href="https://langchain-ai.github.io/langgraph/">LangGraph docs</a>
+          <a href="https://docs.anthropic.com/en/docs/agents-and-tools">Anthropic agents guide</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sh pk">📡 Observability — Your p99 Latency for Agent Systems</div>
+      <div class="card pk">
+        <div class="cl">Trace every LLM call, tool call, and agent decision — or debugging is impossible</div>
+        <div class="cd">Agent systems are non-deterministic. Without tracing, debugging why an agent made a wrong decision is like debugging a distributed system with no logs. LangSmith and Langfuse give you traces showing each LLM call's inputs, outputs, token usage, latency, and tool call chain. This is non-negotiable in production. Think of it like your Jaeger/Zipkin for agents.</div>
+        <div class="mantra pk">"If you can't trace it, you can't debug it. Instrument first, optimise second."</div>
+        <pre><span class="cm"># Langfuse: open-source LLM observability</span>
+<span class="kw">from</span> <span class="fn">langfuse</span> <span class="kw">import</span> <span class="fn">Langfuse</span>
+<span class="kw">from</span> <span class="fn">langfuse.decorators</span> <span class="kw">import</span> <span class="fn">observe</span>, <span class="fn">langfuse_context</span>
+
+<span class="tx">lf</span> = <span class="fn">Langfuse</span>()           <span class="cm"># reads LANGFUSE_* env vars</span>
+
+<span class="kw">@observe</span>()                 <span class="cm"># auto-traces this function</span>
+<span class="kw">def</span> <span class="fn">agent_step</span>(<span class="tx">prompt</span>: <span class="fn">str</span>) -> <span class="fn">str</span>:
+    <span class="tx">response</span> = <span class="fn">call_llm</span>(<span class="tx">prompt</span>)
+    <span class="cm"># Log custom metadata to the trace:</span>
+    <span class="fn">langfuse_context</span>.<span class="fn">update_current_observation</span>(
+        <span class="tx">metadata</span>={<span class="st">"step"</span>: <span class="st">"planning"</span>, <span class="st">"tools_available"</span>: <span class="nm">4</span>})
+    <span class="kw">return</span> <span class="tx">response</span>
+
+<span class="cm"># LangSmith (LangChain native tracing)</span>
+<span class="kw">import</span> <span class="fn">os</span>
+<span class="fn">os</span>.<span class="fn">environ</span>[<span class="st">"LANGCHAIN_TRACING_V2"</span>] = <span class="st">"true"</span>  <span class="cm"># enable tracing</span>
+<span class="fn">os</span>.<span class="fn">environ</span>[<span class="st">"LANGCHAIN_API_KEY"</span>]    = <span class="st">"ls__..."</span>
+<span class="cm"># All LangChain calls are now automatically traced!</span></pre>
+        <div class="refs">
+          <a href="https://langfuse.com/docs">Langfuse docs</a>
+          <a href="https://docs.smith.langchain.com/">LangSmith docs</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sh pk">📊 Phase 4 — Concepts Mapped to Distributed Systems</div>
+      <table>
+        <tr><th>Distributed Systems</th><th>Agent Systems Equivalent</th></tr>
+        <tr><td>Service orchestration</td><td>Agent routing / LangGraph</td></tr>
+        <tr><td>Circuit breaker / retry</td><td>LLM fallback + retry decorator</td></tr>
+        <tr><td>Message queue</td><td>Tool call queue / task planner</td></tr>
+        <tr><td>Distributed cache (L1/L2)</td><td>Short-term / long-term memory</td></tr>
+        <tr><td>Jaeger / Zipkin tracing</td><td>LangSmith / Langfuse</td></tr>
+        <tr><td>API contract / IDL</td><td>Tool JSON schema / Pydantic</td></tr>
+        <tr><td>Health check / SLA</td><td>Eval framework (correctness %)</td></tr>
+        <tr><td>Canary / A-B deploy</td><td>Model A vs Model B evaluation</td></tr>
+        <tr><td>Dead-letter queue</td><td>Failed tool call logging + human-in-the-loop</td></tr>
+        <tr><td>Idempotency key</td><td>Deterministic prompt hashing (temp=0)</td></tr>
+      </table>
+    </div>
+
+    <div class="sec">
+      <div class="sh pk">🏁 All Phases — Memorable Mantras</div>
+      <div class="card pk" style="padding:5px 8px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px 8px">
+          <div class="mantra t" style="font-size:6.5pt;margin:1px 0">"Variables are sticky notes, not typed boxes."</div>
+          <div class="mantra t" style="font-size:6.5pt;margin:1px 0">"If it quacks, it works. Protocol for safety."</div>
+          <div class="mantra t" style="font-size:6.5pt;margin:1px 0">"[what | from | filter] — read comprehensions left to right."</div>
+          <div class="mantra t" style="font-size:6.5pt;margin:1px 0">"yield = pause, remember, resume on demand."</div>
+          <div class="mantra t" style="font-size:6.5pt;margin:1px 0">"with = borrow it, use it, auto-return it."</div>
+          <div class="mantra t" style="font-size:6.5pt;margin:1px 0">"@decorator = AOP without XML or proxies."</div>
+          <div class="mantra pu" style="font-size:6.5pt;margin:1px 0">"Stop looping. Let NumPy loop in C at 100× speed."</div>
+          <div class="mantra pu" style="font-size:6.5pt;margin:1px 0">"DataFrame = SQL table that lives in RAM."</div>
+          <div class="mantra pu" style="font-size:6.5pt;margin:1px 0">"Pydantic = record + validation + Jackson. 3 lines."</div>
+          <div class="mantra pu" style="font-size:6.5pt;margin:1px 0">"async def = coroutine. await = yield CPU for I/O."</div>
+          <div class="mantra am" style="font-size:6.5pt;margin:1px 0">"system = config. user = request. Build the contract."</div>
+          <div class="mantra am" style="font-size:6.5pt;margin:1px 0">"Embeddings = GPS coords for meaning. Nearby = similar."</div>
+          <div class="mantra am" style="font-size:6.5pt;margin:1px 0">"RAG = give the LLM just-in-time notes from your library."</div>
+          <div class="mantra am" style="font-size:6.5pt;margin:1px 0">"Never regex-parse LLM output. Schema → Validate → Throw."</div>
+          <div class="mantra pk" style="font-size:6.5pt;margin:1px 0">"Agent = LLM + Tools + Memory + Loop."</div>
+          <div class="mantra pk" style="font-size:6.5pt;margin:1px 0">"If you can't trace it, you can't debug it."</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end right -->
+  </div><!-- end cols -->
+
+  <div class="pf">
+    <span>Python for AI Engineering · Phase 4 · Page 6/6</span>
+    <span>Refs: <a href="https://python.langchain.com/">LangChain</a> · <a href="https://langchain-ai.github.io/langgraph/">LangGraph</a> · <a href="https://langfuse.com/">Langfuse</a> · <a href="https://docs.anthropic.com/">Anthropic docs</a></span>
+  </div>
+</div>
+
+</body>
+</html>
